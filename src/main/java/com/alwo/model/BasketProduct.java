@@ -25,3 +25,4 @@ public class BasketProduct {
     public BasketProduct() {
     }
 }
+
