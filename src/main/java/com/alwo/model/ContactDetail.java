@@ -1,11 +1,16 @@
 package com.alwo.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "contact_details")
 public class ContactDetail {
@@ -41,7 +46,6 @@ public class ContactDetail {
 
     private String description;
 
-    @Column(nullable = false)
     @ManyToOne(cascade = CascadeType.PERSIST)
     private ContactType contactType;
 
