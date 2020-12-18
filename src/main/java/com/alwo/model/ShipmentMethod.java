@@ -20,9 +20,11 @@ public class ShipmentMethod {
     @NotEmpty
     @Size(min = 2, max = 10)
     private String shipmentMethod;
+    private double shipmentCost;
 
-    public ShipmentMethod(@NotEmpty @Size(min = 2, max = 10) String shipmentMethod) {
+    public ShipmentMethod(@NotEmpty @Size(min = 2, max = 10) String shipmentMethod, double shipmentCost) {
         this.shipmentMethod = shipmentMethod;
+        this.shipmentCost = shipmentCost;
     }
 
     public ShipmentMethod() {
