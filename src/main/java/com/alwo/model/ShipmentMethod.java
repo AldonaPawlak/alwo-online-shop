@@ -10,8 +10,8 @@ import javax.validation.constraints.Size;
 @Entity
 @Setter
 @Getter
-@Table(name = "contact_types")
-public class ContactType {
+@Table(name = "shipment_methods")
+public class ShipmentMethod {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,13 +19,13 @@ public class ContactType {
 
     @NotEmpty
     @Size(min = 2, max = 10)
-    private String contactType;
+    private String shipmentMethod;
 
-    public ContactType(@NotEmpty @Size(min = 2, max = 10) String contactType) {
-        this.contactType = contactType;
+    public ShipmentMethod(@NotEmpty @Size(min = 2, max = 10) String shipmentMethod) {
+        this.shipmentMethod = shipmentMethod;
     }
 
-    public ContactType() {
+    public ShipmentMethod() {
     }
 
 
