@@ -21,10 +21,6 @@ public class User {
     private Long id;
 
     @NotEmpty
-    @Size(min = 2, max = 50)
-    private String name;
-
-    @NotEmpty
     @Email
     @Size(min = 3, max = 50)
     private String email;
@@ -48,11 +44,9 @@ public class User {
     @JoinColumn(name = "userId", updatable = false, insertable = false)
     private List<ContactDetail> contactDetails = new ArrayList<>();
 
-    public User(@NotEmpty @Size(min = 2, max = 50) String name,
-                @NotEmpty @Email @Size(min = 3, max = 50) String email,
+    public User(@NotEmpty @Email @Size(min = 3, max = 50) String email,
                 @NotEmpty @Size(min = 3, max = 100) String password,
                 UserRole role) {
-        this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
