@@ -15,12 +15,10 @@ public class Tax {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private String description;
     private Double taxRate;
 
-    public Tax(String title, String description, Double taxRate) {
+    public Tax(String title, Double taxRate) {
         this.title = title;
-        this.description = description;
         this.taxRate = taxRate;
     }
 
