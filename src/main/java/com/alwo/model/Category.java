@@ -1,5 +1,6 @@
 package com.alwo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
@@ -20,6 +21,9 @@ public class Category {
     private Long id;
     private String categoryName;
     private String description;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "categories")
+    private List<Product> products = new ArrayList<>();
 
     public Category(String categoryName, String description) {
         this.categoryName = categoryName;

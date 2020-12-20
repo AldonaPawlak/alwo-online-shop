@@ -21,17 +21,20 @@ public class Product {
     private String name;
     private String description;
     private double price;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Producer producer;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Tax tax;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private ProductType productType;
     private int stock;
     private boolean isActive;
 
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = CascadeType.PERSIST)
+            cascade = {
+//                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
     @Fetch(FetchMode.SELECT)
     @JoinTable(name = "product_categories",
             joinColumns = { @JoinColumn(name = "product_id", referencedColumnName = "id", updatable = false, insertable = false) },

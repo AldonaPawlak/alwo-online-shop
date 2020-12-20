@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -33,5 +34,21 @@ public class ProductService {
     public Product getProduct(long id){
         return productRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Product " + id + " does not exist"));
+    }
+
+    @Transactional
+    public Product editProduct(Product product) {
+        Product productEdited = productRepository.findById(product.getId())
+                .orElseThrow(() -> new IllegalStateException("Product " + product.getId() + " does not exist"));
+        productEdited.setName(product.getName());
+        productEdited.setDescription(productEdited.getDescription());
+        productEdited.setPrice(product.getPrice());
+        productEdited.setProducer(product.getProducer());
+        productEdited.setTax(product.getTax());
+        productEdited.setProductType(product.getProductType());
+        productEdited.setPrice(product.getPrice());
+        productEdited.setActive(product.isActive());
+        productEdited.setCategories(product.getCategories());
+        return productEdited;
     }
 }
