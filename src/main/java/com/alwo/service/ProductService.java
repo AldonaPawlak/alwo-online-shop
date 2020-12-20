@@ -2,6 +2,7 @@ package com.alwo.service;
 
 import com.alwo.model.Product;
 import com.alwo.repository.ProductRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,15 @@ public class ProductService {
         return productRepository.findAllProducts(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "name")));
     }
 
-    public ResponseEntity getProduct(long id) {
+//    public ResponseEntity getProduct(long id) {
+//        return productRepository.findById(id)
+//                .map(ResponseEntity::ok)
+//                .orElseGet(() -> ResponseEntity.notFound().build());
+//    }
+
+//    @Cacheable(cacheNames = "SinglePost", key = "#id")
+    public Product getProduct(long id){
         return productRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new IllegalStateException("Product " + id + " does not exist"));
     }
 }
