@@ -30,11 +30,11 @@ public class Product {
     private int stock;
     private boolean isActive;
 
-    @ManyToMany(fetch = FetchType.EAGER,
+    @ManyToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST)
     @Fetch(FetchMode.SELECT)
     @JoinTable(name = "product_categories",
-            joinColumns = { @JoinColumn(name = "product_id", referencedColumnName = "id") },
+            joinColumns = { @JoinColumn(name = "product_id", referencedColumnName = "id", updatable = false, insertable = false) },
             inverseJoinColumns = { @JoinColumn(name = "category_id", referencedColumnName = "id") })
 //    @JsonIgnore
     private List<Category> categories = new ArrayList<>();

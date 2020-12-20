@@ -1,5 +1,7 @@
 package com.alwo.controller;
 
+import com.alwo.dto.DtoMapper;
+import com.alwo.dto.ProductDto;
 import com.alwo.model.Product;
 import com.alwo.service.ProductService;
 import org.springframework.data.domain.Sort;
@@ -15,20 +17,22 @@ import java.util.List;
 public class ProductController {
 
     private ProductService productService;
+    private DtoMapper dtoMapper;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, DtoMapper dtoMapper) {
         this.productService = productService;
+        this.dtoMapper = dtoMapper;
     }
 
     @GetMapping("/products")
-    public List<Product> getProducts(@RequestParam(required = false) Integer page, Sort.Direction sort) {
+    public List<ProductDto> getProducts(@RequestParam(required = false) Integer page, Sort.Direction sort) {
         int pageNumber = page != null && page>= 0 ? page:0;
         Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
-        return productService.getProducts(pageNumber, sortDirection);
+        return dtoMapper.mapToProductDtos(productService.getProducts(pageNumber, sortDirection));
     }
 
     @GetMapping("/products/{id}")
-    public ResponseEntity getProduct(@PathVariable long id){
-        return productService.getProduct(id);
+    public ProductDto getProduct(@PathVariable long id){
+        return dtoMapper.mapToProductDto(productService.getProduct(id));
     }
 }
