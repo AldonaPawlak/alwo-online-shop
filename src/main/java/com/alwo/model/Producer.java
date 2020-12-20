@@ -8,19 +8,21 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-@Table(name = "suppliers")
-public class Supplier {
+@Table(name = "producers")
+public class Producer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private boolean isActive;
+    private String description;
 
-    public Supplier(String name, boolean isActive) {
+
+    public Producer(String name, String description) {
         this.name = name;
-        this.isActive = isActive;
+        this.description = description;
+
     }
 
-    public Supplier(){ }
+    public Producer(){ }
 }
