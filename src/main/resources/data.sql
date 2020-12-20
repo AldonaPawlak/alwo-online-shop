@@ -21,11 +21,11 @@ INSERT INTO producers(description, name) values ('description_producer4', 'produ
 
 INSERT INTO taxes(tax_rate, title) values (23, 'VAT tax');
 
-INSERT INTO categories(category_name, description) values ('categoty1', 'category_description1');
-INSERT INTO categories(category_name, description) values ('categoty2', 'category_description2');
-INSERT INTO categories(category_name, description) values ('categoty3', 'category_description3');
-INSERT INTO categories(category_name, description) values ('categoty4', 'category_description4');
-INSERT INTO categories(category_name, description) values ('categoty5', 'category_description5');
+INSERT INTO categories(category_name, description) values ('category1', 'category_description1');
+INSERT INTO categories(category_name, description) values ('category2', 'category_description2');
+INSERT INTO categories(category_name, description) values ('category3', 'category_description3');
+INSERT INTO categories(category_name, description) values ('category4', 'category_description4');
+INSERT INTO categories(category_name, description) values ('category5', 'category_description5');
 
 INSERT INTO product_categories(product_id, category_id) values (1, 1);
 INSERT INTO product_categories(product_id, category_id) values (2, 1);

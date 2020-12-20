@@ -5,12 +5,9 @@ import com.alwo.dto.ProductDto;
 import com.alwo.model.Product;
 import com.alwo.service.ProductService;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -32,7 +29,15 @@ public class ProductController {
     }
 
     @GetMapping("/products/{id}")
-    public ProductDto getProduct(@PathVariable long id){
-        return dtoMapper.mapToProductDto(productService.getProduct(id));
+//    public ProductDto getProduct(@PathVariable long id){
+    public Product getProduct(@PathVariable long id){
+//        return dtoMapper.mapToProductDto(productService.getProduct(id));
+        return productService.getProduct(id);
+    }
+
+    // ONLY ADMIN
+    @PutMapping("/admin/products")
+    public Product editProduct(@RequestBody Product product){
+        return productService.editProduct(product);
     }
 }
