@@ -20,9 +20,18 @@ public class BasketProduct {
     @ManyToOne(cascade = CascadeType.PERSIST)
     Product product;
     private int quantity;
-    private Date dateAdded;
+
+    private double totalPrice;
+//    private Date dateAdded;
 
     public BasketProduct() {
+    }
+
+    public BasketProduct(User user, Product product, int quantity, double totalPrice) {
+        this.user = user;
+        this.product = product;
+        this.quantity = quantity;
+        this.totalPrice = totalPrice;
     }
 }
 
