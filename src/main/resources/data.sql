@@ -27,17 +27,8 @@ INSERT INTO categories(category_name, description) values ('category3', 'categor
 INSERT INTO categories(category_name, description) values ('category4', 'category_description4');
 INSERT INTO categories(category_name, description) values ('category5', 'category_description5');
 
-INSERT INTO product_categories(product_id, category_id) values (1, 1);
-INSERT INTO product_categories(product_id, category_id) values (2, 1);
-INSERT INTO product_categories(product_id, category_id) values (3, 1);
-INSERT INTO product_categories(product_id, category_id) values (4, 2);
-INSERT INTO product_categories(product_id, category_id) values (5, 2);
-INSERT INTO product_categories(product_id, category_id) values (1, 2);
-
-
-
 INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
- values ('description1', true, 'product1', 120, 10, 1, 1, 1);
+values ('description1', true, 'product1', 120, 10, 1, 1, 1);
 INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
 values ('description2', true, 'product2', 150, 8, 1, 1, 1);
 INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
@@ -47,4 +38,16 @@ values ('description4', true, 'product4', 550, 9, 3, 2, 1);
 INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
 values ('description5', true, 'product5', 330, 12, 3, 2, 1);
 
+INSERT INTO product_categories(category_id, product_id) values (1, 1);
+INSERT INTO product_categories(category_id, product_id) values (1, 2);
+INSERT INTO product_categories(category_id, product_id) values (1, 3);
+INSERT INTO product_categories(category_id, product_id) values (2, 4);
+INSERT INTO product_categories(category_id, product_id) values (2, 5);
+INSERT INTO product_categories(category_id, product_id) values (2, 1);
 
+
+INSERT INTO basket_products(quantity, total_price, product_id, user_id) values (3, 360, 1, 1);
+INSERT INTO basket_products(quantity, total_price, product_id, user_id) values (1, 150, 2, 1);
+INSERT INTO basket_products(quantity, total_price, product_id, user_id) values (2, 400, 3, 1);
+INSERT INTO basket_products(quantity, total_price, product_id, user_id) values (1, 120, 1, 2);
+INSERT INTO basket_products(quantity, total_price, product_id, user_id) values (5, 2750, 4, 3);
