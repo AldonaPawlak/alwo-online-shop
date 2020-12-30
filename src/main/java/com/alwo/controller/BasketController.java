@@ -2,6 +2,7 @@ package com.alwo.controller;
 
 import com.alwo.model.BasketProduct;
 import com.alwo.service.impl.BasketServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,23 +16,33 @@ public class BasketController {
         this.basketService = basketService;
     }
 
-    @GetMapping("/users/{userId}/basket")
+    @GetMapping("/{userId}/basket")
+    @ResponseStatus(HttpStatus.OK)
     public List<BasketProduct> getUserBasketProducts(@PathVariable long userId){
         return basketService.getUserBasketProducts(userId);
     }
 
-    @PostMapping("/users/{userId}/basket/{productId}")
+    @PostMapping("/{userId}/{productId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public BasketProduct addProductToBasket(@PathVariable long userId, @PathVariable long productId){
         return basketService.addProductToBasket(userId, productId);
     }
 
-    @PutMapping("/users/{userId}/basket")
+    @PutMapping("/{userId}/basket")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public List<BasketProduct> editUserBasketProducts(@RequestBody List<BasketProduct> basketProducts, @PathVariable Long userId){
         return basketService.editUserBasketProducts(basketProducts, userId);
     }
 
-    @DeleteMapping("/users/{userId}/basket")
+    @DeleteMapping("/{userId}/basket")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteUserBasket(@PathVariable Long userId){
         basketService.deleteUserBasket(userId);
+    }
+
+    @DeleteMapping("/{userId}/basket/{basketProductId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deleteUserBasket(@PathVariable Long userId, @PathVariable Long basketProductId){
+        basketService.deleteProductFromBasket(userId, basketProductId);
     }
 }

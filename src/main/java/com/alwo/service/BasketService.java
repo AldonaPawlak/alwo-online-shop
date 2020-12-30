@@ -15,4 +15,5 @@ public interface BasketService {
     void deleteUserBasket(Long userId);
 
 
+    void deleteProductFromBasket(Long userId, Long basketProductId);
 }
