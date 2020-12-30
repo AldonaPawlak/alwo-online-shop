@@ -1,5 +1,6 @@
 package com.alwo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,14 +16,16 @@ public class BasketProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST)
     User user;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     Product product;
     private int quantity;
 
     private double totalPrice;
-//    private Date dateAdded;
 
     public BasketProduct() {
     }

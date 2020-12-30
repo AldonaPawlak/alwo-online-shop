@@ -39,7 +39,7 @@ public class Product {
     @JoinTable(name = "product_categories",
             joinColumns = { @JoinColumn(name = "product_id", referencedColumnName = "id", updatable = false, insertable = false) },
             inverseJoinColumns = { @JoinColumn(name = "category_id", referencedColumnName = "id") })
-//    @JsonIgnore
+    @JsonIgnore
     private List<Category> categories = new ArrayList<>();
 
     public Product(String name, String description, double price, Producer producer, Tax tax, ProductType productType, int stock, boolean isActive) {

@@ -1,5 +1,6 @@
 package com.alwo.service.impl;
 
+import com.alwo.exception.ResourceNotFoundException;
 import com.alwo.model.Category;
 import com.alwo.repository.CategoryRepository;
 import com.alwo.service.CategoryService;
@@ -25,7 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     public Category getCategory(long id){
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Category " + id + " does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category " + id + " does not exist"));
     }
 
 }
