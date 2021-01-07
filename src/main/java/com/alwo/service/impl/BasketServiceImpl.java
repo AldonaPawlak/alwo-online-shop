@@ -1,5 +1,6 @@
 package com.alwo.service.impl;
 
+import com.alwo.exception.ResourceNotFoundException;
 import com.alwo.model.BasketProduct;
 import com.alwo.model.Product;
 import com.alwo.model.User;
@@ -10,9 +11,7 @@ import com.alwo.service.BasketService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BasketServiceImpl implements BasketService {
@@ -20,36 +19,40 @@ public class BasketServiceImpl implements BasketService {
     private ProductRepository productRepository;
     private UserRepository userRepository;
     private BasketProductRepository basketProductRepository;
+    private AuthServiceImpl authServiceImpl;
 
     public BasketServiceImpl(ProductRepository productRepository,
                              UserRepository userRepository,
-                             BasketProductRepository basketProductRepository) {
+                             BasketProductRepository basketProductRepository,
+                             AuthServiceImpl authServiceImpl) {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
         this.basketProductRepository = basketProductRepository;
+        this.authServiceImpl = authServiceImpl;
     }
 
     @Override
-    public List<BasketProduct> getUserBasketProducts(long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User " + userId + " not found"));
+    public List<BasketProduct> getUserBasketProducts() {
+        User user = authServiceImpl.getCurrentUser();
+        System.out.println(user);
         return basketProductRepository.findAllByUser(user);
     }
 
     @Override
     @Transactional
-    public BasketProduct addProductToBasket(long userId, long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalStateException("Product " + productId + " not found"));
-        List<BasketProduct> userBasketProducts = getUserBasketProducts(userId);
-        Optional<BasketProduct> myProduct = userBasketProducts.stream()
-                .findFirst()
-                .filter(basketProduct -> basketProduct.getProduct().getId() == productId);
+    public BasketProduct addProductToBasket(long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product " + productId + " not found"));
+        List<BasketProduct> userBasketProducts = getUserBasketProducts();
 
-        if(myProduct.isPresent()){
-            BasketProduct basketProduct = basketProductRepository.findById(myProduct.get().getId()).orElseThrow();
-            basketProduct.setQuantity(basketProduct.getQuantity() + 1);
-            return basketProduct;
+        for (BasketProduct userBasketProduct : userBasketProducts) {
+            if(userBasketProduct.getProduct().getId() == productId){
+                userBasketProduct.setQuantity(userBasketProduct.getQuantity() + 1);
+                userBasketProduct.setTotalPrice(userBasketProduct.getProduct().getPrice() * userBasketProduct.getQuantity());
+                return userBasketProduct;
+            }
         }
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User " + userId + " not found"));
+        User user = authServiceImpl.getCurrentUser();
         int quantity = 1;
         double totalPrice = product.getPrice() * quantity;
         return basketProductRepository.save(new BasketProduct(user, product, quantity, totalPrice));
@@ -57,8 +60,8 @@ public class BasketServiceImpl implements BasketService {
 
     @Override
     @Transactional
-    public List<BasketProduct> editUserBasketProducts(List<BasketProduct> editedBasketProducts, Long userId) {
-        List<BasketProduct> userBasketProducts = getUserBasketProducts(userId);
+    public List<BasketProduct> editUserBasketProducts(List<BasketProduct> editedBasketProducts) {
+        List<BasketProduct> userBasketProducts = getUserBasketProducts();
         userBasketProducts.forEach(userBasketProductToEdit -> editUserBasketProduct(userBasketProductToEdit, editedBasketProducts));
         return userBasketProducts;
     }
@@ -77,11 +80,16 @@ public class BasketServiceImpl implements BasketService {
 
     @Override
     @Transactional
-    public void deleteUserBasket(Long userId) {
-        List<BasketProduct> results = getUserBasketProducts(userId);
+    public void deleteUserBasket() {
+        List<BasketProduct> results = getUserBasketProducts();
         basketProductRepository.deleteAll(results);
     }
 
+    @Override
+    @Transactional
+    public void deleteProductFromBasket(Long basketProductId) {
+        basketProductRepository.deleteById(basketProductId);
+    }
 
 
 }

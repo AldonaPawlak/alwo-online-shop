@@ -7,12 +7,12 @@ INSERT INTO users(email, password, role_id) values ('jurek@jurek.pl', 'jurek123'
 INSERT INTO users(email, password, role_id) values ('ula@ula.pl', 'ula123', 1);
 INSERT INTO users(email, password, role_id) values ('zenek@zenek.pl', 'zenek123', 1);
 
-INSERT INTO product_types(product_type) values ('TYPE1');
-INSERT INTO product_types(product_type) values ('TYPE2');
-INSERT INTO product_types(product_type) values ('TYPE3');
-INSERT INTO product_types(product_type) values ('TYPE4');
-INSERT INTO product_types(product_type) values ('TYPE5');
-INSERT INTO product_types(product_type) values ('TYPE6');
+INSERT INTO product_types(product_type) values ('PRODUCT_TYPE_1');
+INSERT INTO product_types(product_type) values ('PRODUCT_TYPE_2');
+INSERT INTO product_types(product_type) values ('PRODUCT_TYPE_3');
+INSERT INTO product_types(product_type) values ('PRODUCT_TYPE_4');
+INSERT INTO product_types(product_type) values ('PRODUCT_TYPE_5');
+INSERT INTO product_types(product_type) values ('PRODUCT_TYPE_6');
 
 INSERT INTO producers(description, name) values ('description_producer1', 'producer1');
 INSERT INTO producers(description, name) values ('description_producer2', 'producer2');

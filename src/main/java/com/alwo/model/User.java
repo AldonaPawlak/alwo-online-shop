@@ -6,9 +6,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Setter
@@ -23,7 +23,7 @@ public class User {
     @NotEmpty
     @Email
     @Size(min = 3, max = 50)
-    private String email;
+    private String username;
 
     @NotEmpty
     @Size(min = 3, max = 100)
@@ -32,26 +32,45 @@ public class User {
     @Column(columnDefinition = "boolean default true")
     private boolean isActive = true;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-//    @JsonIgnoreProperties(value = "id")
-    private UserRole role;
+    @NotNull
+    private String userRole;
 
-    @OneToMany
-    @JoinColumn(name = "userId", updatable = false, insertable = false)
-    private List<Order> orders = new ArrayList<>();
 
-    @OneToMany
-    @JoinColumn(name = "userId", updatable = false, insertable = false)
-    private List<ContactDetail> contactDetails = new ArrayList<>();
-
-    public User(@NotEmpty @Email @Size(min = 3, max = 50) String email,
+    public User(@NotEmpty @Email @Size(min = 3, max = 50) String username,
                 @NotEmpty @Size(min = 3, max = 100) String password,
-                UserRole role) {
-        this.email = email;
+                boolean isActive,
+                @NotNull String userRole) {
+        this.username = username;
         this.password = password;
-        this.role = role;
+        this.isActive = isActive;
+        this.userRole = userRole;
     }
 
     public User() {
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return isActive == user.isActive && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(userRole, user.userRole);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, isActive, userRole);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", isActive=" + isActive +
+                ", userRole='" + userRole + '\'' +
+                '}';
+    }
 }
+

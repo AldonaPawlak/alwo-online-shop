@@ -2,11 +2,14 @@ package com.alwo.controller;
 
 import com.alwo.model.BasketProduct;
 import com.alwo.service.impl.BasketServiceImpl;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+//@RequestMapping("/alwo")
 public class BasketController {
 
     private BasketServiceImpl basketService;
@@ -15,23 +18,38 @@ public class BasketController {
         this.basketService = basketService;
     }
 
-    @GetMapping("/users/{userId}/basket")
-    public List<BasketProduct> getUserBasketProducts(@PathVariable long userId){
-        return basketService.getUserBasketProducts(userId);
+    @GetMapping("/alwo/basket")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+    public List<BasketProduct> getUserBasketProducts(){
+        return basketService.getUserBasketProducts();
     }
 
-    @PostMapping("/users/{userId}/basket/{productId}")
-    public BasketProduct addProductToBasket(@PathVariable long userId, @PathVariable long productId){
-        return basketService.addProductToBasket(userId, productId);
+    @PostMapping("/alwo/basket/{productId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+    public BasketProduct addProductToBasket(@PathVariable long productId){
+        return basketService.addProductToBasket(productId);
     }
 
-    @PutMapping("/users/{userId}/basket")
-    public List<BasketProduct> editUserBasketProducts(@RequestBody List<BasketProduct> basketProducts, @PathVariable Long userId){
-        return basketService.editUserBasketProducts(basketProducts, userId);
+    @PutMapping("/alwo/basket")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+    public List<BasketProduct> editUserBasketProducts(@RequestBody List<BasketProduct> basketProducts){
+        return basketService.editUserBasketProducts(basketProducts);
     }
 
-    @DeleteMapping("/users/{userId}/basket")
-    public void deleteUserBasket(@PathVariable Long userId){
-        basketService.deleteUserBasket(userId);
+    @DeleteMapping("/alwo/basket")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+    public void deleteUserBasket(){
+        basketService.deleteUserBasket();
+    }
+
+    @DeleteMapping("/alwo/basket/del-product/{basketProductId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+    public void deleteProductBasket(@PathVariable Long basketProductId){
+        basketService.deleteProductFromBasket(basketProductId);
     }
 }

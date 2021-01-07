@@ -1,5 +1,6 @@
 package com.alwo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,16 +15,15 @@ public class OrderedProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Product product;
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private Order order;
+
     private int quantity;
     private double orderedProductPrice;
 
-    public OrderedProduct(Product product, Order order, int quantity, double orderedProductPrice) {
+    public OrderedProduct(Product product, int quantity, double orderedProductPrice) {
         this.product = product;
-        this.order = order;
         this.quantity = quantity;
         this.orderedProductPrice = orderedProductPrice;
     }
