@@ -1,16 +1,14 @@
 package com.alwo.controller;
 
 import com.alwo.dto.DtoMapper;
-import com.alwo.dto.ProductDto;
 import com.alwo.model.Category;
-import com.alwo.model.Product;
 import com.alwo.service.CategoryService;
-import com.alwo.service.ProductService;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class CategoryController {
@@ -23,19 +21,27 @@ public class CategoryController {
         this.dtoMapper = dtoMapper;
     }
 
-    @GetMapping("/categories")
-    public List<Category> getProducts(@RequestParam(required = false) Integer page, Sort.Direction sort) {
+    @GetMapping("/alwo/categories")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Category> getCategories(@RequestParam(required = false) Integer page, Sort.Direction sort) {
         int pageNumber = page != null && page>= 0 ? page:0;
         Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
 //        return dtoMapper.mapToProductDtos(productService.getProducts(pageNumber, sortDirection));
         return categoryService.getCategories(pageNumber, sortDirection);
     }
 
-    @GetMapping("/categories/{id}")
+    @GetMapping("/alwo/categories/{id}")
+    @ResponseStatus(HttpStatus.OK)
 //    public ProductDto getProduct(@PathVariable long id){
     public Category getCategory(@PathVariable long id){
 //        return dtoMapper.mapToProductDto(productService.getProduct(id));
         return categoryService.getCategory(id);
+    }
+
+    @GetMapping("/alwo/categories/selected")   // http://localhost:8080/alwo/categories/selected?categories=category1,category2,category3
+    @ResponseStatus(HttpStatus.OK)
+    public Set<Category> getSelectedCategories(@RequestParam(required = false) List<String> categories) {
+        return categoryService.getCategoriesBYNames(categories);
     }
 
     // ONLY ADMIN

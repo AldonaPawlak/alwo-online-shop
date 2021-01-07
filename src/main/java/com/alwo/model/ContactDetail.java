@@ -1,5 +1,6 @@
 package com.alwo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +19,9 @@ public class ContactDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    User user;
 
     @NotEmpty
     @Size(min = 2, max = 50)
@@ -50,8 +53,7 @@ public class ContactDetail {
     private ContactType contactType;
 
 
-    public ContactDetail(Long userId,
-                         @NotEmpty @Size(min = 2, max = 50) String firstname,
+    public ContactDetail(User user, @NotEmpty @Size(min = 2, max = 50) String firstname,
                          @NotEmpty @Size(min = 2, max = 50) String lastName,
                          @NotEmpty @Size(min = 2, max = 50) String street,
                          @NotEmpty @Size(min = 1, max = 10) String apartmentNumber,
@@ -59,7 +61,7 @@ public class ContactDetail {
                          @NotEmpty @Size(min = 2, max = 10) String city,
                          String description,
                          ContactType contactType) {
-        this.userId = userId;
+        this.user = user;
         this.firstname = firstname;
         this.lastName = lastName;
         this.street = street;

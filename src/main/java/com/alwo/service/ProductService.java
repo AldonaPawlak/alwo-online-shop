@@ -21,4 +21,6 @@ public interface ProductService {
 
     void deleteProduct(@Min(value = 1L, message = "Invalid product ID.") long id);
 
+    List<Product> getProductsByCategories(List<String> categories);
+
 }
