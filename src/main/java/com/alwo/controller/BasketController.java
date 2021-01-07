@@ -16,31 +16,31 @@ public class BasketController {
         this.basketService = basketService;
     }
 
-    @GetMapping("/{userId}/basket")
+    @GetMapping("/basket/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public List<BasketProduct> getUserBasketProducts(@PathVariable long userId){
         return basketService.getUserBasketProducts(userId);
     }
 
-    @PostMapping("/{userId}/{productId}")
+    @PostMapping("/basket/{userId}/{productId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public BasketProduct addProductToBasket(@PathVariable long userId, @PathVariable long productId){
         return basketService.addProductToBasket(userId, productId);
     }
 
-    @PutMapping("/{userId}/basket")
+    @PutMapping("/basket/{userId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public List<BasketProduct> editUserBasketProducts(@RequestBody List<BasketProduct> basketProducts, @PathVariable Long userId){
         return basketService.editUserBasketProducts(basketProducts, userId);
     }
 
-    @DeleteMapping("/{userId}/basket")
+    @DeleteMapping("/basket/{userId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteUserBasket(@PathVariable Long userId){
         basketService.deleteUserBasket(userId);
     }
 
-    @DeleteMapping("/{userId}/basket/{basketProductId}")
+    @DeleteMapping("/basket/{userId}/{basketProductId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteUserBasket(@PathVariable Long userId, @PathVariable Long basketProductId){
         basketService.deleteProductFromBasket(userId, basketProductId);

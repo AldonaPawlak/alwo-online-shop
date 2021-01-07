@@ -19,10 +19,10 @@ public class UserRole {
 
     @NotEmpty
     @Size(min = 2, max = 10)
-    private String role;
+    private String userRole;
 
-    public UserRole(@NotEmpty @Size(min = 2, max = 10) String role) {
-        this.role = role;
+    public UserRole(@NotEmpty @Size(min = 2, max = 10) String userRole) {
+        this.userRole = userRole;
     }
 
     public UserRole() {
