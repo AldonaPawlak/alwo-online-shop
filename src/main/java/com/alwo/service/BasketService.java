@@ -6,14 +6,13 @@ import java.util.List;
 
 public interface BasketService {
 
-    List<BasketProduct> getUserBasketProducts(long userId);
+    List<BasketProduct> getUserBasketProducts();
 
-    BasketProduct addProductToBasket(long userId, long productId);
+    BasketProduct addProductToBasket(long productId);
 
-    List<BasketProduct> editUserBasketProducts(List<BasketProduct> editedBasketProducts, Long userId);
+    List<BasketProduct> editUserBasketProducts(List<BasketProduct> editedBasketProducts);
 
-    void deleteUserBasket(Long userId);
+    void deleteUserBasket();
 
-
-    void deleteProductFromBasket(Long userId, Long basketProductId);
+    void deleteProductFromBasket(Long basketProductId);
 }

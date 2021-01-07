@@ -1,5 +1,8 @@
 package com.alwo.enums;
 
-public class UserRoleEnum {
+public enum UserRoleEnum {
+
+    ADMIN,
+    CUSTOMER
 
 }

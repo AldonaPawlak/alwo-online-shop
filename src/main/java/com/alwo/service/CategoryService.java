@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CategoryService {
 
@@ -14,5 +15,6 @@ public interface CategoryService {
 
     Category getCategory(long id);
 
+    Set<Category> getCategoriesBYNames(List<String> categoriesNames);
 
 }
