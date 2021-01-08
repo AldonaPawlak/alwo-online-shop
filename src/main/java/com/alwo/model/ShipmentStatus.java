@@ -1,11 +1,11 @@
 package com.alwo.model;
 
+import com.alwo.enums.ShipmentStatuses;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 @Entity
 @Setter
@@ -18,15 +18,13 @@ public class ShipmentStatus {
     private Long id;
 
     @NotEmpty
-    @Size(min = 2, max = 10)
+    @Column(name = "shipment_status")
     private String shipmentStatus;
 
-    public ShipmentStatus(@NotEmpty @Size(min = 2, max = 10) String shipmentStatus) {
-        this.shipmentStatus = shipmentStatus;
+    public ShipmentStatus(ShipmentStatuses shipmentStatus) {
+        this.shipmentStatus = shipmentStatus.name();
     }
 
     public ShipmentStatus() {
     }
-
-
 }
