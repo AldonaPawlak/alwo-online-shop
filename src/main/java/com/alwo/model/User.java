@@ -36,6 +36,8 @@ public class User {
     private String userRole;
 
 
+
+
     public User(@NotEmpty @Email @Size(min = 3, max = 50) String username,
                 @NotEmpty @Size(min = 3, max = 100) String password,
                 boolean isActive,

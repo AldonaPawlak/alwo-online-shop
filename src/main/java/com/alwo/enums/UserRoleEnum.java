@@ -3,6 +3,10 @@ package com.alwo.enums;
 public enum UserRoleEnum {
 
     ADMIN,
-    CUSTOMER
+    CUSTOMER;
+
+    public int getValue() {
+        return ordinal() + 1;
+    }
 
 }

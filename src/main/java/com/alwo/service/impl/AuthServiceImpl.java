@@ -19,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Transactional
     public void signup(RegisterRequest registerRequest) {
+
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
@@ -59,6 +61,8 @@ public class AuthServiceImpl implements AuthService {
         user.setActive(true);
         userRepository.save(user);
     }
+
+
 
 
     public AuthenticationResponse login(LoginRequest loginRequest) {

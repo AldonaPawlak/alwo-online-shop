@@ -11,6 +11,7 @@ import com.alwo.service.BasketService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -34,7 +35,6 @@ public class BasketServiceImpl implements BasketService {
     @Override
     public List<BasketProduct> getUserBasketProducts() {
         User user = authServiceImpl.getCurrentUser();
-        System.out.println(user);
         return basketProductRepository.findAllByUser(user);
     }
 
@@ -48,14 +48,13 @@ public class BasketServiceImpl implements BasketService {
         for (BasketProduct userBasketProduct : userBasketProducts) {
             if(userBasketProduct.getProduct().getId() == productId){
                 userBasketProduct.setQuantity(userBasketProduct.getQuantity() + 1);
-                userBasketProduct.setTotalPrice(userBasketProduct.getProduct().getPrice() * userBasketProduct.getQuantity());
                 return userBasketProduct;
             }
         }
         User user = authServiceImpl.getCurrentUser();
         int quantity = 1;
-        double totalPrice = product.getPrice() * quantity;
-        return basketProductRepository.save(new BasketProduct(user, product, quantity, totalPrice));
+        BigDecimal totalPrice = product.getPrice().multiply(new BigDecimal(quantity));
+        return basketProductRepository.save(new BasketProduct(user, product, quantity));
     }
 
     @Override
@@ -70,7 +69,6 @@ public class BasketServiceImpl implements BasketService {
         for (BasketProduct editedBasketProduct : editedBasketProducts) {
             if(editedBasketProduct.getProduct().getId().equals(userBasketProductToEdit.getProduct().getId())){
                 userBasketProductToEdit.setQuantity(editedBasketProduct.getQuantity());
-                userBasketProductToEdit.setTotalPrice(userBasketProductToEdit.getTotalPrice() * userBasketProductToEdit.getQuantity());
                 if(userBasketProductToEdit.getQuantity() <= 0){
                     basketProductRepository.delete(userBasketProductToEdit);
                 }

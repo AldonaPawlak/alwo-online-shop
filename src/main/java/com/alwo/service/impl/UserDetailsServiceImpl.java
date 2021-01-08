@@ -33,8 +33,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("No user " +
                         "Found with username : " + username));
 
-        System.out.println(user);
-
         return new org.springframework.security
                 .core.userdetails.User(user.getUsername(), user.getPassword(),
                 user.isActive(), true, true,

@@ -12,11 +12,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
@@ -100,10 +103,10 @@ public class OrderServiceImpl implements OrderService {
         List<ContactDetail> contactDetails = dtoMapper.mapToContactDetail(orderDataDto.getAddresses(), user);
 
         ShipmentMethod shipmentMethod = shipmentService.getShipmentMethodById(orderDataDto.getShipmentMethod());
-        ShipmentStatus shipmentStatus = shipmentService.getShipmentStatusById((long) ShipmentStatuses.INITIAL.getValue());
+        ShipmentStatus shipmentStatus = shipmentService.getShipmentStatusById(ShipmentStatuses.INITIAL.getValue());
         Shipment shipment = dtoMapper.mapToShipment(shipmentStatus, shipmentMethod);
         PaymentMethod paymentMethod = paymentService.getPaymentMethodById(orderDataDto.getPaymentMethod());
-        PaymentStatus paymentStatus = paymentService.getPaymentStatusById((long) PaymentStatuses.WAITING.getValue());
+        PaymentStatus paymentStatus = paymentService.getPaymentStatusById(PaymentStatuses.WAITING.getValue());
         Payment payment = dtoMapper.mapToPayment(paymentStatus ,paymentMethod);
         order.setOrderStatus(orderStatus);
         order.setOrderedProducts(orderedProducts);
@@ -113,15 +116,15 @@ public class OrderServiceImpl implements OrderService {
         order.setPayment(payment);
         Date date = new Date();
         order.setPurchaseDate(date);
-        double totalPrice = 0;
+        BigDecimal totalPrice = new BigDecimal(0);
         for (OrderedProduct orderedProduct : orderedProducts) {
-            totalPrice += orderedProduct.getTotalPrice();
+            totalPrice =  totalPrice.add(orderedProduct.getTotalPrice());
         }
         order.setOrderedProductsCost(totalPrice);
-        totalPrice += shipment.getShipmentMethod().getShipmentCost();
+        totalPrice = totalPrice.add(shipment.getShipmentMethod().getShipmentCost());
         order.setTotalCost(totalPrice);
         addOrder(order);
-        orderedProductRepository.saveAll(orderedProducts);
+//        orderedProductRepository.saveAll(orderedProducts);
         return order;
     }
 

@@ -3,6 +3,7 @@ package com.alwo.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -21,10 +22,17 @@ public class OrderedProduct {
     private String producerName;
     private double taxRate;
     private int quantity;
-    private double orderedProductPrice;
-    private double totalPrice;
+    private BigDecimal orderedProductPrice;
+    private BigDecimal totalPrice;
 
-    public OrderedProduct(Product product, String productName, String description, String producerName, double taxRate, int quantity, double orderedProductPrice, double totalPrice) {
+    public OrderedProduct(Product product,
+                          String productName,
+                          String description,
+                          String producerName,
+                          double taxRate,
+                          int quantity,
+                          BigDecimal orderedProductPrice,
+                          BigDecimal totalPrice) {
         this.product = product;
         this.productName = productName;
         this.description = description;
