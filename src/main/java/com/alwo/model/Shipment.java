@@ -1,12 +1,10 @@
 package com.alwo.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 
-@Setter
-@Getter
+@Data
 @Entity
 @Table(name = "shipments")
 public class Shipment {
