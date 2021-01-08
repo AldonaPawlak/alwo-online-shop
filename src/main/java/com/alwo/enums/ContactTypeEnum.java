@@ -3,5 +3,9 @@ package com.alwo.enums;
 public enum ContactTypeEnum {
 
     DELIVERY,
-    INVOICE
+    INVOICE;
+
+    public int getValue() {
+        return ordinal() + 1;
+    }
 }

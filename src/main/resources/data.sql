@@ -1,8 +1,7 @@
-INSERT INTO users(username, password, user_role) values ('admin@admin.pl', 'admin123', 'ADMIN');
-INSERT INTO users(username, password, user_role) values ('ala@ala.pl', 'ala123', 'CUSTOMER');
-INSERT INTO users(username, password, user_role) values ('jurek@jurek.pl', 'jurek123', 'CUSTOMER');
-INSERT INTO users(username, password, user_role) values ('ula@ula.pl', 'ula123', 'CUSTOMER');
-INSERT INTO users(username, password, user_role) values ('zenek@zenek.pl', 'zenek123', 'CUSTOMER');
+INSERT INTO users(password, user_role, username) values ('$2a$10$CMJOFC33Vh8qgEjiCNd0ouHM.L9neRkdy6gMAMstsLVtYtUa3xt/.', 'CUSTOMER', 'wt@wt.pl');
+INSERT INTO users(password, user_role, username) values ('$2a$10$GVKthzo4fSlXAow3/L8h9OYpaqq2zYKlckVg4l4socmsYxbl1MmgK', 'CUSTOMER', 'aldona@aldona.pl');
+INSERT INTO users(password, user_role, username) values ('$2a$10$ZyxYZVP90Q706VKi7aoZNepW2lmWMluifJEjyhT7V0/iOh2g.9sFy', 'ADMIN', 'admin@admin.pl');
+
 
 INSERT INTO product_types(product_type) values ('PRODUCT_TYPE_1');
 INSERT INTO product_types(product_type) values ('PRODUCT_TYPE_2');
@@ -43,11 +42,11 @@ INSERT INTO product_categories(category_id, product_id) values (2, 5);
 INSERT INTO product_categories(category_id, product_id) values (2, 1);
 
 
-INSERT INTO basket_products(quantity, total_price, product_id, user_id) values (3, 360, 1, 1);
-INSERT INTO basket_products(quantity, total_price, product_id, user_id) values (1, 150, 2, 1);
-INSERT INTO basket_products(quantity, total_price, product_id, user_id) values (2, 400, 3, 1);
-INSERT INTO basket_products(quantity, total_price, product_id, user_id) values (1, 120, 1, 2);
-INSERT INTO basket_products(quantity, total_price, product_id, user_id) values (5, 2750, 4, 3);
+INSERT INTO basket_products(quantity, product_id, user_id) values (3, 1, 1);
+INSERT INTO basket_products(quantity, product_id, user_id) values (1, 2, 1);
+INSERT INTO basket_products(quantity, product_id, user_id) values (2, 3, 1);
+INSERT INTO basket_products(quantity, product_id, user_id) values (1, 1, 2);
+INSERT INTO basket_products(quantity, product_id, user_id) values (5, 4, 2);
 
 INSERT INTO payment_statuses(payment_status) values ('WAITING');
 INSERT INTO payment_statuses(payment_status) values ('PROCESSED');

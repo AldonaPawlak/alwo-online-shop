@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,10 +39,10 @@ public class Order {
 
     @Temporal(TemporalType.DATE)
     private Date purchaseDate;
-    private Double orderedProductsCost;
-    private Double totalCost;
+    private BigDecimal orderedProductsCost;
+    private BigDecimal totalCost;
 
-    public Order(User user, OrderStatus orderStatus, Shipment shipment, Payment payment, Date purchaseDate, Double orderedProductsCost, Double totalCost) {
+    public Order(User user, OrderStatus orderStatus, Shipment shipment, Payment payment, Date purchaseDate, BigDecimal orderedProductsCost, BigDecimal totalCost) {
         this.user = user;
         this.orderStatus = orderStatus;
         this.shipment = shipment;

@@ -25,7 +25,7 @@ public class OrderController {
         this.userService = userService;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @GetMapping("/alwo/orders")
     @ResponseStatus(HttpStatus.OK)
     public List<Order> getOrders(@RequestParam(required = false) Integer page, Sort.Direction sort) {
@@ -34,7 +34,7 @@ public class OrderController {
         return orderService.getOrders(pageNumber, sortDirection);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @GetMapping(path = "/alwo/orders/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Order getOrder(@PathVariable long id) {
@@ -48,7 +48,7 @@ public class OrderController {
         return orderService.getUserOrders();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @PostMapping("/alwo/order")
     public void addOrder(@RequestBody OrderDataDto orderDataDto) {
         orderService.createNewOrder(orderDataDto);
