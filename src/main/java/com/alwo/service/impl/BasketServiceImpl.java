@@ -90,6 +90,4 @@ public class BasketServiceImpl implements BasketService {
     public void deleteProductFromBasket(Long basketProductId) {
         basketProductRepository.deleteById(basketProductId);
     }
-
-
 }

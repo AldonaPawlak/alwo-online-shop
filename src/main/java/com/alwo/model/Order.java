@@ -1,12 +1,16 @@
 package com.alwo.model;
 
-import jdk.jfr.Timestamp;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+@Data
 @Getter
 @Setter
 @Entity
@@ -16,23 +20,34 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
-    private Long orderStatusId;
-    private Long shipmentId;
-    private Long paymentId;
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private User user;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private OrderStatus orderStatus;
+    @OneToMany
+    @JoinColumn(name = "id", updatable = false, insertable = false)
+    private List<ContactDetail> addresses = new ArrayList<>();
+    @OneToMany
+    @JoinColumn(name = "id", updatable = false, insertable = false)
+    private List<OrderedProduct> orderedProducts = new ArrayList<>();
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Shipment shipment;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Payment payment;
+
+    @Temporal(TemporalType.DATE)
     private Date purchaseDate;
     private Double orderedProductsCost;
-    private Double shipmentCost;
     private Double totalCost;
 
-    public Order(Long userId, Long orderStatusId, Long shipmentId, Long paymentId, Date purchaseDate, Double orderedProductsCost, Double shipmentCost, Double totalCost) {
-        this.userId = userId;
-        this.orderStatusId = orderStatusId;
-        this.shipmentId = shipmentId;
-        this.paymentId = paymentId;
+    public Order(User user, OrderStatus orderStatus, Shipment shipment, Payment payment, Date purchaseDate, Double orderedProductsCost, Double totalCost) {
+        this.user = user;
+        this.orderStatus = orderStatus;
+        this.shipment = shipment;
+        this.payment = payment;
         this.purchaseDate = purchaseDate;
         this.orderedProductsCost = orderedProductsCost;
-        this.shipmentCost = shipmentCost;
         this.totalCost = totalCost;
     }
 

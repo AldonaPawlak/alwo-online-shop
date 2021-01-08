@@ -1,8 +1,9 @@
 package com.alwo.dto;
 
-import com.alwo.model.Product;
+import com.alwo.model.*;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,5 +29,33 @@ public class DtoMapper {
                 .stock(product.getStock())
                 .isActive(product.isActive())
                 .build();
+    }
+
+    public List<ContactDetail> mapToContactDetail(List<ContactDetailDto> contactDetailDto, User user) {
+        List<ContactDetail> contactDetails = new ArrayList<>();
+        for (ContactDetailDto detailDto : contactDetailDto) {
+            contactDetails.add(
+                    new ContactDetail(
+                            user,
+                            detailDto.getFirstName(),
+                            detailDto.getLastName(),
+                            detailDto.getStreet(),
+                            detailDto.getApartmentNumber(),
+                            detailDto.getZipCode(),
+                            detailDto.getCity(),
+                            detailDto.getDescription(),
+                            new ContactType(detailDto.getContactType())
+                    )
+            );
+        }
+        return contactDetails;
+    }
+
+    public Shipment mapToShipment(ShipmentStatus shipmentStatus, ShipmentMethod shipmentMethod ) {
+        return new Shipment(shipmentStatus, shipmentMethod);
+    }
+
+    public Payment mapToPayment(PaymentStatus paymentStatus, PaymentMethod paymentMethod) {
+        return new Payment(paymentStatus, paymentMethod);
     }
 }

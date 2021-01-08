@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 @Getter
 @Setter
@@ -24,7 +23,6 @@ public class BasketProduct {
     @ManyToOne(cascade = CascadeType.PERSIST)
     Product product;
     private int quantity;
-
     private double totalPrice;
 
     public BasketProduct() {
@@ -37,4 +35,3 @@ public class BasketProduct {
         this.totalPrice = totalPrice;
     }
 }
-
