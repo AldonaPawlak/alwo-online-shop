@@ -4,6 +4,7 @@ import com.alwo.dto.AuthenticationResponse;
 import com.alwo.dto.LoginRequest;
 import com.alwo.dto.RefreshTokenRequest;
 import com.alwo.dto.RegisterRequest;
+import com.alwo.exception.ConflictException;
 import com.alwo.exception.SpringAlwoException;
 //import com.alwo.model.NotificationEmail;
 import com.alwo.model.User;
@@ -53,7 +54,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Transactional
     public void signup(RegisterRequest registerRequest) {
-
+        if (checkUserName(registerRequest) != null){
+            throw new ConflictException("User already exists, please enter another username or login");
+        }
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
@@ -62,7 +65,10 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
     }
 
-
+    private User checkUserName(RegisterRequest registerRequest) {
+        Optional<User> userOptional = userRepository.findByUsername(registerRequest.getUsername());
+        return userOptional.orElse(null);
+    }
 
 
     public AuthenticationResponse login(LoginRequest loginRequest) {
@@ -71,7 +77,6 @@ public class AuthServiceImpl implements AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateToken(authenticate);
-//        return new AuthenticationResponse(token, loginRequest.getUsername());
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
                 .refreshToken(refreshTokenService.generateRefreshToken().getToken())
