@@ -23,6 +23,7 @@ public class User {
     @NotEmpty
     @Email
     @Size(min = 3, max = 50)
+    @Column(unique=true)
     private String username;
 
     @NotEmpty
