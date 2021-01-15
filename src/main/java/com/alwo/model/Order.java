@@ -26,11 +26,11 @@ public class Order {
     private User user;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private OrderStatus orderStatus;
-    @OneToMany
-    @JoinColumn(name = "id", updatable = false, insertable = false)
+    @OneToMany(mappedBy = "order")
+//    @JoinColumn(name = "id", updatable = false, insertable = false)
     private List<ContactDetail> addresses = new ArrayList<>();
-    @OneToMany
-    @JoinColumn(name = "id", updatable = false, insertable = false)
+    @OneToMany(mappedBy = "order")
+//    @JoinColumn(name = "id", updatable = false, insertable = false)
     private List<OrderedProduct> orderedProducts = new ArrayList<>();
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Shipment shipment;

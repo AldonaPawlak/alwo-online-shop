@@ -1,6 +1,7 @@
 package com.alwo.controller;
 
 import com.alwo.dto.OrderDataDto;
+import com.alwo.dto.OrderResponseDto;
 import com.alwo.model.Order;
 import com.alwo.service.BasketService;
 import com.alwo.service.OrderService;
@@ -28,29 +29,39 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @GetMapping("/alwo/orders")
     @ResponseStatus(HttpStatus.OK)
+    public List<OrderResponseDto> getUserOrders(){
+        return orderService.getUserOrders();
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+    @GetMapping("/alwo/orders/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Order getUserOrder(@PathVariable long id){
+        return orderService.getUserOrder(id);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+    @PostMapping("/alwo/orders")
+    public void addOrder(@RequestBody OrderDataDto orderDataDto) {
+        orderService.createNewOrder(orderDataDto);
+    }
+
+    // ONLY ADMIN
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/admin/alwo/orders")
+    @ResponseStatus(HttpStatus.OK)
     public List<Order> getOrders(@RequestParam(required = false) Integer page, Sort.Direction sort) {
         int pageNumber = page != null && page>= 0 ? page:0;
         Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
         return orderService.getOrders(pageNumber, sortDirection);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
-    @GetMapping(path = "/alwo/orders/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping(path = "/admin/alwo/orders/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Order getOrder(@PathVariable long id) {
         return orderService.getOrder(id);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
-    @GetMapping("/alwo/orders/user")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Order> getUserOrders(){
-        return orderService.getUserOrders();
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
-    @PostMapping("/alwo/order")
-    public void addOrder(@RequestBody OrderDataDto orderDataDto) {
-        orderService.createNewOrder(orderDataDto);
-    }
 }
