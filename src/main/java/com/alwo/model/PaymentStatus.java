@@ -1,11 +1,10 @@
 package com.alwo.model;
 
+import com.alwo.enums.PaymentStatuses;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 @Entity
 @Setter
@@ -17,16 +16,13 @@ public class PaymentStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
-    @Size(min = 2, max = 10)
+    @Column(name = "payment_status")
     private String paymentStatus;
 
-    public PaymentStatus(@NotEmpty @Size(min = 2, max = 10) String paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public PaymentStatus(PaymentStatuses paymentStatus) {
+        this.paymentStatus = paymentStatus.name();
     }
 
     public PaymentStatus() {
     }
-
-
 }

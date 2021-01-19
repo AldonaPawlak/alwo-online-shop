@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Setter
 @Getter
-@Table(name = "shipment_methods")
+@Table(name = "payment_methods")
 public class PaymentMethod {
 
     @Id
@@ -27,6 +27,4 @@ public class PaymentMethod {
 
     public PaymentMethod() {
     }
-
-
 }

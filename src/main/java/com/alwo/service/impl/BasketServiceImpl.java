@@ -11,22 +11,20 @@ import com.alwo.service.BasketService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 public class BasketServiceImpl implements BasketService {
 
-    private ProductRepository productRepository;
-    private UserRepository userRepository;
-    private BasketProductRepository basketProductRepository;
-    private AuthServiceImpl authServiceImpl;
+    private final ProductRepository productRepository;
+    private final BasketProductRepository basketProductRepository;
+    private final AuthServiceImpl authServiceImpl;
 
     public BasketServiceImpl(ProductRepository productRepository,
-                             UserRepository userRepository,
                              BasketProductRepository basketProductRepository,
                              AuthServiceImpl authServiceImpl) {
         this.productRepository = productRepository;
-        this.userRepository = userRepository;
         this.basketProductRepository = basketProductRepository;
         this.authServiceImpl = authServiceImpl;
     }
@@ -34,7 +32,6 @@ public class BasketServiceImpl implements BasketService {
     @Override
     public List<BasketProduct> getUserBasketProducts() {
         User user = authServiceImpl.getCurrentUser();
-        System.out.println(user);
         return basketProductRepository.findAllByUser(user);
     }
 
@@ -44,18 +41,27 @@ public class BasketServiceImpl implements BasketService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product " + productId + " not found"));
         List<BasketProduct> userBasketProducts = getUserBasketProducts();
+        BasketProduct updatedBasketProduct = updateProductIfExist(userBasketProducts, productId);
+        if (updatedBasketProduct != null){
+            return updatedBasketProduct;
+        }
+        return newProductInBasket(product);
+    }
 
+    private BasketProduct updateProductIfExist(List<BasketProduct> userBasketProducts, long productId) {
         for (BasketProduct userBasketProduct : userBasketProducts) {
             if(userBasketProduct.getProduct().getId() == productId){
                 userBasketProduct.setQuantity(userBasketProduct.getQuantity() + 1);
-                userBasketProduct.setTotalPrice(userBasketProduct.getProduct().getPrice() * userBasketProduct.getQuantity());
                 return userBasketProduct;
             }
         }
+        return null;
+    }
+
+    private BasketProduct newProductInBasket(Product product) {
         User user = authServiceImpl.getCurrentUser();
         int quantity = 1;
-        double totalPrice = product.getPrice() * quantity;
-        return basketProductRepository.save(new BasketProduct(user, product, quantity, totalPrice));
+        return basketProductRepository.save(new BasketProduct(user, product, quantity));
     }
 
     @Override
@@ -70,7 +76,6 @@ public class BasketServiceImpl implements BasketService {
         for (BasketProduct editedBasketProduct : editedBasketProducts) {
             if(editedBasketProduct.getProduct().getId().equals(userBasketProductToEdit.getProduct().getId())){
                 userBasketProductToEdit.setQuantity(editedBasketProduct.getQuantity());
-                userBasketProductToEdit.setTotalPrice(userBasketProductToEdit.getTotalPrice() * userBasketProductToEdit.getQuantity());
                 if(userBasketProductToEdit.getQuantity() <= 0){
                     basketProductRepository.delete(userBasketProductToEdit);
                 }
@@ -90,6 +95,4 @@ public class BasketServiceImpl implements BasketService {
     public void deleteProductFromBasket(Long basketProductId) {
         basketProductRepository.deleteById(basketProductId);
     }
-
-
 }

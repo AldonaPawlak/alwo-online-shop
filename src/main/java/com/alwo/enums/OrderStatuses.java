@@ -1,12 +1,10 @@
 package com.alwo.enums;
 
-public enum UserRoleEnum {
+public enum OrderStatuses {
 
-    ADMIN,
-    CUSTOMER;
+    INCOMPLETE, COMPLETE, BACKORDERED, CANCELED, DECLINED;
 
     public int getValue() {
         return ordinal() + 1;
     }
-
 }

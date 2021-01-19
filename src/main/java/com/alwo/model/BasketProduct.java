@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -25,16 +25,17 @@ public class BasketProduct {
     Product product;
     private int quantity;
 
-    private double totalPrice;
-
     public BasketProduct() {
     }
 
-    public BasketProduct(User user, Product product, int quantity, double totalPrice) {
+    public BasketProduct(User user, Product product, int quantity) {
         this.user = user;
         this.product = product;
         this.quantity = quantity;
-        this.totalPrice = totalPrice;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return product.getPrice().multiply(new BigDecimal(quantity));
     }
 }
 

@@ -7,6 +7,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Product {
     private Long id;
     private String name;
     private String description;
-    private double price;
+    private BigDecimal price;
     @ManyToOne(cascade = CascadeType.MERGE)
     private Producer producer;
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -42,7 +43,7 @@ public class Product {
     @JsonIgnore
     private List<Category> categories = new ArrayList<>();
 
-    public Product(String name, String description, double price, Producer producer, Tax tax, ProductType productType, int stock, boolean isActive) {
+    public Product(String name, String description, BigDecimal price, Producer producer, Tax tax, ProductType productType, int stock, boolean isActive) {
         this.name = name;
         this.description = description;
         this.price = price;
