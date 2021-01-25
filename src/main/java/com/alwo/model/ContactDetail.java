@@ -52,6 +52,10 @@ public class ContactDetail {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private ContactType contactType;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    Order order;
 
     public ContactDetail(User user, @NotEmpty @Size(min = 2, max = 50) String firstname,
                          @NotEmpty @Size(min = 2, max = 50) String lastName,
@@ -60,7 +64,8 @@ public class ContactDetail {
                          @NotEmpty @Size(min = 2, max = 10) String zipCode,
                          @NotEmpty @Size(min = 2, max = 10) String city,
                          String description,
-                         ContactType contactType) {
+                         ContactType contactType,
+                         Order order) {
         this.user = user;
         this.firstname = firstname;
         this.lastName = lastName;
@@ -70,6 +75,7 @@ public class ContactDetail {
         this.city = city;
         this.description = description;
         this.contactType = contactType;
+        this.order = order;
     }
 
     public ContactDetail() {

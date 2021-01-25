@@ -23,6 +23,7 @@ public class User {
     @NotEmpty
     @Email
     @Size(min = 3, max = 50)
+    @Column(unique=true)
     private String username;
 
     @NotEmpty
@@ -34,6 +35,8 @@ public class User {
 
     @NotNull
     private String userRole;
+
+
 
 
     public User(@NotEmpty @Email @Size(min = 3, max = 50) String username,

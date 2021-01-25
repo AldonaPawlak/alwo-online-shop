@@ -44,8 +44,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     public Product editProduct(Product product) {
-//        Product productEdited = productRepository.findById(product.getId())
-//                .orElseThrow(() -> new IllegalStateException("Product " + product.getId() + " does not exist"));
+
         Product productEdited = getProduct(product.getId());
         productEdited.setName(product.getName());
         productEdited.setDescription(productEdited.getDescription());

@@ -7,5 +7,9 @@ public enum ProductTypeEnum {
     PRODUCT_TYPE_3,
     PRODUCT_TYPE_4,
     PRODUCT_TYPE_5,
-    PRODUCT_TYPE_6
+    PRODUCT_TYPE_6;
+
+    public int getValue() {
+        return ordinal() + 1;
+    }
 }

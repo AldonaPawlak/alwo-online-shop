@@ -1,6 +1,7 @@
 package com.alwo.service;
 
 import com.alwo.dto.OrderDataDto;
+import com.alwo.dto.OrderResponseDto;
 import com.alwo.model.Order;
 import com.alwo.model.OrderedProduct;
 import com.alwo.model.User;
@@ -14,7 +15,7 @@ public interface OrderService {
 
     Order getOrder(long id);
 
-    List<OrderedProduct> getUserOrderedProducts(User user);
+    List<OrderedProduct> getUserOrderedProducts(User user, Order order);
 
     Order addOrder(Order order);
 
@@ -26,9 +27,11 @@ public interface OrderService {
 
     void  cancelOrder(long orderId);
 
-    List<Order> getUserOrders();
+    List<OrderResponseDto> getUserOrders();
 
     void  cancel(long orderId);
 
     Order createNewOrder(OrderDataDto orderDataDto);
+
+    Order getUserOrder(long id);
 }

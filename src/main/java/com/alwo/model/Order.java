@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,11 +26,11 @@ public class Order {
     private User user;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private OrderStatus orderStatus;
-    @OneToMany
-    @JoinColumn(name = "id", updatable = false, insertable = false)
+    @OneToMany(mappedBy = "order")
+//    @JoinColumn(name = "id", updatable = false, insertable = false)
     private List<ContactDetail> addresses = new ArrayList<>();
-    @OneToMany
-    @JoinColumn(name = "id", updatable = false, insertable = false)
+    @OneToMany(mappedBy = "order")
+//    @JoinColumn(name = "id", updatable = false, insertable = false)
     private List<OrderedProduct> orderedProducts = new ArrayList<>();
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Shipment shipment;
@@ -38,10 +39,10 @@ public class Order {
 
     @Temporal(TemporalType.DATE)
     private Date purchaseDate;
-    private Double orderedProductsCost;
-    private Double totalCost;
+    private BigDecimal orderedProductsCost;
+    private BigDecimal totalCost;
 
-    public Order(User user, OrderStatus orderStatus, Shipment shipment, Payment payment, Date purchaseDate, Double orderedProductsCost, Double totalCost) {
+    public Order(User user, OrderStatus orderStatus, Shipment shipment, Payment payment, Date purchaseDate, BigDecimal orderedProductsCost, BigDecimal totalCost) {
         this.user = user;
         this.orderStatus = orderStatus;
         this.shipment = shipment;

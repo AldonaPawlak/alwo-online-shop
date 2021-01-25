@@ -2,7 +2,9 @@ package com.alwo.service.impl;
 
 import com.alwo.dto.AuthenticationResponse;
 import com.alwo.dto.LoginRequest;
+import com.alwo.dto.RefreshTokenRequest;
 import com.alwo.dto.RegisterRequest;
+import com.alwo.exception.ConflictException;
 import com.alwo.exception.SpringAlwoException;
 //import com.alwo.model.NotificationEmail;
 import com.alwo.model.User;
@@ -18,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,26 +34,40 @@ import java.util.UUID;
 
 public class AuthServiceImpl implements AuthService {
 
-    private PasswordEncoder passwordEncoder;
-    private UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final RefreshTokenService refreshTokenService;
 
-    public AuthServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, AuthenticationManager authenticationManager, JwtProvider jwtProvider) {
+    public AuthServiceImpl(PasswordEncoder passwordEncoder,
+                           UserRepository userRepository,
+                           AuthenticationManager authenticationManager,
+                           JwtProvider jwtProvider,
+                           RefreshTokenService refreshTokenService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @Transactional
     public void signup(RegisterRequest registerRequest) {
+        if (checkUserName(registerRequest) != null){
+            throw new ConflictException("User already exists, please enter another username or login");
+        }
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setUserRole(UserRoleEnum.CUSTOMER.name());
         user.setActive(true);
         userRepository.save(user);
+    }
+
+    private User checkUserName(RegisterRequest registerRequest) {
+        Optional<User> userOptional = userRepository.findByUsername(registerRequest.getUsername());
+        return userOptional.orElse(null);
     }
 
 
@@ -60,7 +77,14 @@ public class AuthServiceImpl implements AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateToken(authenticate);
-        return new AuthenticationResponse(token, loginRequest.getUsername());
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
+                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .username(loginRequest.getUsername())
+                .build();
+
+
     }
 
     @org.springframework.transaction.annotation.Transactional(readOnly = true)
@@ -69,6 +93,17 @@ public class AuthServiceImpl implements AuthService {
                 getContext().getAuthentication().getPrincipal();
         return userRepository.findByUsername(principal.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User name not found - " + principal.getUsername()));
+    }
+
+    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
+        String token = jwtProvider.generateTokenWithUserName(refreshTokenRequest.getUsername());
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .refreshToken(refreshTokenRequest.getRefreshToken())
+                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .username(refreshTokenRequest.getUsername())
+                .build();
     }
 
 }
