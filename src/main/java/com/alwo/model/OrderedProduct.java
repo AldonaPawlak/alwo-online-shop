@@ -17,13 +17,17 @@ public class OrderedProduct {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Product product;
     private String productName;
-    @Lob
     private String description;
     private String producerName;
     private double taxRate;
     private int quantity;
     private BigDecimal orderedProductPrice;
     private BigDecimal totalPrice;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     public OrderedProduct(Product product,
                           String productName,

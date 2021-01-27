@@ -31,7 +31,7 @@ public class DtoMapper {
                 .build();
     }
 
-    public List<ContactDetail> mapToContactDetail(List<ContactDetailDto> contactDetailDto, User user) {
+    public List<ContactDetail> mapToContactDetail(List<ContactDetailDto> contactDetailDto, User user, Order order) {
         List<ContactDetail> contactDetails = new ArrayList<>();
         for (ContactDetailDto detailDto : contactDetailDto) {
             contactDetails.add(
@@ -44,7 +44,8 @@ public class DtoMapper {
                             detailDto.getZipCode(),
                             detailDto.getCity(),
                             detailDto.getDescription(),
-                            new ContactType(detailDto.getContactType())
+                            new ContactType(detailDto.getContactType()),
+                            order
                     )
             );
         }
@@ -57,5 +58,25 @@ public class DtoMapper {
 
     public Payment mapToPayment(PaymentStatus paymentStatus, PaymentMethod paymentMethod) {
         return new Payment(paymentStatus, paymentMethod);
+    }
+
+    public List<OrderResponseDto> mapToOrderResponseDtos(List<Order> orders){
+        return orders.stream()
+                .map(this::mapToOrderResponseDto).collect(Collectors.toList());
+    }
+
+    private OrderResponseDto mapToOrderResponseDto(Order order) {
+        return OrderResponseDto.builder()
+                .orderId(order.getId())
+                .username(order.getUser().getUsername())
+                .orderStatus(order.getOrderStatus().getOrderStatus())
+                .shipmentMethod(order.getShipment().getShipmentMethod().getShipmentMethod())
+                .shipmentStatus(order.getShipment().getShipmentStatus().getShipmentStatus())
+                .paymentMethod(order.getPayment().getPaymentMethod().getPaymentMethod())
+                .paymentStatus(order.getPayment().getPaymentStatus().getPaymentStatus())
+                .purchaseDate(order.getPurchaseDate().toString())
+                .totalCost(order.getTotalCost())
+                .build();
+
     }
 }
