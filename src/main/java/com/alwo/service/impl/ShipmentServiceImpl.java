@@ -47,7 +47,8 @@ public class ShipmentServiceImpl implements ShipmentService {
 
     @Override
     public ShipmentStatus getShipmentStatusById(long id) {
-        return null;
+        return shipmentStatusRepository.findShipmentStatusById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("ShipmentStatus " + id + " does not exist"));
     }
 
     @Override

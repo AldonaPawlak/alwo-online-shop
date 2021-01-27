@@ -2,9 +2,11 @@ package com.alwo.service.impl;
 
 import com.alwo.dto.DtoMapper;
 import com.alwo.dto.OrderDataDto;
+import com.alwo.dto.OrderResponseDto;
 import com.alwo.enums.OrderStatuses;
 import com.alwo.enums.PaymentStatuses;
 import com.alwo.enums.ShipmentStatuses;
+import com.alwo.exception.SpringAlwoException;
 import com.alwo.model.*;
 import com.alwo.repository.*;
 import com.alwo.service.*;
@@ -17,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -82,9 +85,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getUserOrders() {
+    public List<OrderResponseDto> getUserOrders() {
         User user = authServiceImpl.getCurrentUser();
-        return orderRepository.findAllByUser(user);
+        return dtoMapper.mapToOrderResponseDtos(orderRepository.findAllByUser(user));
     }
 
     @Override
@@ -94,16 +97,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createNewOrder(OrderDataDto orderDataDto) {
-        Order order = new Order();
-
-        OrderStatus orderStatus = orderStatusService.getOrderStatus((long) OrderStatuses.INCOMPLETE.getValue());
+        Order order = orderRepository.save(new Order());
         User user = authServiceImpl.getCurrentUser();
-        List<OrderedProduct> orderedProducts = getUserOrderedProducts(user);
+        OrderStatus orderStatus = orderStatusService.getOrderStatus(OrderStatuses.INCOMPLETE.getValue());
 
-        List<ContactDetail> contactDetails = dtoMapper.mapToContactDetail(orderDataDto.getAddresses(), user);
+        List<OrderedProduct> orderedProducts = getUserOrderedProducts(user, order);
+        List<ContactDetail> contactDetails = contactDetailRepository.saveAll(dtoMapper.mapToContactDetail(orderDataDto.getAddresses(), user, order));
 
         ShipmentMethod shipmentMethod = shipmentService.getShipmentMethodById(orderDataDto.getShipmentMethod());
         ShipmentStatus shipmentStatus = shipmentService.getShipmentStatusById(ShipmentStatuses.INITIAL.getValue());
+        System.out.println(shipmentStatus.toString());
         Shipment shipment = dtoMapper.mapToShipment(shipmentStatus, shipmentMethod);
         PaymentMethod paymentMethod = paymentService.getPaymentMethodById(orderDataDto.getPaymentMethod());
         PaymentStatus paymentStatus = paymentService.getPaymentStatusById(PaymentStatuses.WAITING.getValue());
@@ -123,13 +126,26 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderedProductsCost(totalPrice);
         totalPrice = totalPrice.add(shipment.getShipmentMethod().getShipmentCost());
         order.setTotalCost(totalPrice);
-        addOrder(order);
-//        orderedProductRepository.saveAll(orderedProducts);
-        return order;
+
+        return orderRepository.save(order);
     }
 
     @Override
-    public List<OrderedProduct> getUserOrderedProducts(User user) {
+    public Order getUserOrder(long id) {
+        User user = authServiceImpl.getCurrentUser();
+        List<Order> userOrders = orderRepository.findAllByUser(user);
+        List<Long> ids = userOrders.stream()
+                .map(Order::getId)
+                .collect(Collectors.toList());
+        if (ids.contains(id)){
+            return orderRepository.findById(id)
+                    .orElseThrow(() -> new IllegalStateException("Order " + id + " does not exist"));
+        }
+        throw  new SpringAlwoException("Invalid order id");
+    }
+
+    @Override
+    public List<OrderedProduct> getUserOrderedProducts(User user, Order order) {
         List<BasketProduct> basketProducts = basketService.getUserBasketProducts();
         List<OrderedProduct> orderedProducts = new ArrayList<>();
         basketService.deleteUserBasket();
@@ -143,8 +159,9 @@ public class OrderServiceImpl implements OrderService {
             orderedProduct.setQuantity(basketProduct.getQuantity());
             orderedProduct.setOrderedProductPrice(basketProduct.getProduct().getPrice());
             orderedProduct.setTotalPrice(basketProduct.getTotalPrice());
+            orderedProduct.setOrder(order);
             orderedProducts.add(orderedProduct);
         }
-        return orderedProducts;
+        return orderedProductRepository.saveAll(orderedProducts);
     }
 }
