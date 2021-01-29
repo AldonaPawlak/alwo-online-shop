@@ -17,11 +17,12 @@ INSERT INTO producers(description, name) values ('description_producer4', 'produ
 
 INSERT INTO taxes(tax_rate, title) values (23, 'VAT tax');
 
-INSERT INTO categories(category_name, description) values ('category1', 'category_description1');
-INSERT INTO categories(category_name, description) values ('category2', 'category_description2');
-INSERT INTO categories(category_name, description) values ('category3', 'category_description3');
-INSERT INTO categories(category_name, description) values ('category4', 'category_description4');
-INSERT INTO categories(category_name, description) values ('category5', 'category_description5');
+INSERT INTO categories(category_name, description) values ('Children', 'Children');
+INSERT INTO categories(category_name, description) values ('Fiction', 'Fiction');
+INSERT INTO categories(category_name, description) values ('Non-Fiction', 'Non-Fiction');
+INSERT INTO categories(category_name, description) values ('Drama', 'Drama');
+INSERT INTO categories(category_name, description) values ('Poetry', 'Poetry');
+INSERT INTO categories(category_name, description) values ('Fairy Tale', 'Fairy Tale');
 
 INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
 values ('description1', true, 'product1', 120, 10, 1, 1, 1);
