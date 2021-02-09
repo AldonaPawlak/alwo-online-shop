@@ -24,10 +24,6 @@ public class DtoMapper {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .producer(product.getProducer())
-                .tax(product.getTax())
-                .productType(product.getProductType())
-                .stock(product.getStock())
-                .isActive(product.isActive())
                 .build();
     }
 

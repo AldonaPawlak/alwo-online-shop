@@ -32,15 +32,40 @@ public class ProductServiceImpl implements ProductService {
         this.categoryServiceImpl = categoryServiceImpl;
     }
 
-    public List<Product> getProducts(int page, Sort.Direction sort) {
-        return productRepository.findAllProducts(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "name")));
+    public List<Product> getProducts(int page, List<String> categories, Sort.Direction sort) {
+        Set<Category> selectedCategories = categoryServiceImpl.getCategoriesBYNames(categories);
+        List<Product> products = productRepository.findAllProducts(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "name")));
+        List<Product> selectedProducts = new ArrayList<>();
+        for (Product product : products){
+            if (product.getCategories().containsAll(selectedCategories)){
+                selectedProducts.add(product);
+            }
+        }
+
+        return selectedProducts;
     }
+
 
     //    @Cacheable(cacheNames = "SinglePost", key = "#id")
     public Product getProduct(long id){
         return productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product " + id + " does not exist"));
     }
+
+//    @Override
+//    @Transactional
+//    public List<Product> getProductsByCategories(List<String> categories) {
+//        Set<Category> selectedCategories = categoryServiceImpl.getCategoriesBYNames(categories);
+//        List<Product> products = productRepository.findAllProducts();
+//        List<Product> selectedProducts = new ArrayList<>();
+//        for (Product product : products){
+//            if (product.getCategories().containsAll(selectedCategories)){
+//                selectedProducts.add(product);
+//            }
+//        }
+//
+//        return selectedProducts;
+//    }
 
     @Transactional
     public Product editProduct(Product product) {
@@ -68,20 +93,7 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
-    @Override
-    @Transactional
-    public List<Product> getProductsByCategories(List<String> categories) {
-        Set<Category> selectedCategories = categoryServiceImpl.getCategoriesBYNames(categories);
-        List<Product> products = productRepository.findAllProductsToCategory();
-        List<Product> selectedProducts = new ArrayList<>();
-        for (Product product : products){
-            if (product.getCategories().containsAll(selectedCategories)){
-                selectedProducts.add(product);
-            }
-        }
 
-        return selectedProducts;
-    }
 
 
 }
