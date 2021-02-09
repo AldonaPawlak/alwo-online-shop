@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    @NotNull List<Product> getProducts(int page, Sort.Direction sort);
+    @NotNull List<Product> getProducts(int page, List<String> categories, Sort.Direction sort);
 
     Product getProduct(@Min(value = 1L, message = "Invalid product ID.") long id);
 
@@ -21,6 +21,6 @@ public interface ProductService {
 
     void deleteProduct(@Min(value = 1L, message = "Invalid product ID.") long id);
 
-    List<Product> getProductsByCategories(List<String> categories);
+//    List<Product> getProductsByCategories(List<String> categories);
 
 }
