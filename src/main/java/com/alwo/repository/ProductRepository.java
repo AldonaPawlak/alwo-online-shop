@@ -13,7 +13,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("select p from Product p")
     List<Product> findAllProducts(Pageable page);
-
-    @Query("select p from Product p")
-    List<Product> findAllProductsToCategory();
+//
+//    @Query("select p from Product p")
+//    List<Product> findAllProductsToCategory();
 }

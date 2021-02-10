@@ -15,13 +15,8 @@ public class ProductDto {
 
     private Long id;
     private String name;
+    private String author;
     private String description;
     private BigDecimal price;
     private Producer producer;
-    private Tax tax;
-    private ProductType productType;
-    private int stock;
-    private boolean isActive;
-
-
 }
