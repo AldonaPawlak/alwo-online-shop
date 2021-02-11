@@ -37,11 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity.csrf().disable()
+        httpSecurity.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/alwo/auth/**")
-                .permitAll()
                 .antMatchers(HttpMethod.GET, "/alwo/products/**", "/alwo/categories/**")
+                .permitAll()
+                .antMatchers("/alwo/auth/**")
                 .permitAll()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()

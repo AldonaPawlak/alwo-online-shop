@@ -24,16 +24,16 @@ INSERT INTO categories(category_name, description) values ('Drama', 'Drama');
 INSERT INTO categories(category_name, description) values ('Poetry', 'Poetry');
 INSERT INTO categories(category_name, description) values ('Fairy Tale', 'Fairy Tale');
 
-INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
-values ('description1', true, 'product1', 120, 10, 1, 1, 1);
-INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
-values ('description2', true, 'product2', 150, 8, 1, 1, 1);
-INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
-values ('description3', true, 'product3', 200, 5, 2, 1, 1);
-INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
-values ('description4', true, 'product4', 550, 9, 3, 2, 1);
-INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
-values ('description5', true, 'product5', 330, 12, 3, 2, 1);
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
+values ('author1', 'description1', true, 'product1', 120, 10, 1, 1, 1);
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
+values ('author2', 'description2', true, 'product2', 150, 8, 1, 1, 1);
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
+values ('author3', 'description3', true, 'product3', 200, 5, 2, 1, 1);
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
+values ('author4', 'description4', true, 'product4', 550, 9, 3, 2, 1);
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
+values ('author5', 'description5', true, 'product5', 330, 12, 3, 2, 1);
 
 INSERT INTO product_categories(category_id, product_id) values (1, 1);
 INSERT INTO product_categories(category_id, product_id) values (1, 2);

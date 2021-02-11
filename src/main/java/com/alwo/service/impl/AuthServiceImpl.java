@@ -5,22 +5,15 @@ import com.alwo.dto.LoginRequest;
 import com.alwo.dto.RefreshTokenRequest;
 import com.alwo.dto.RegisterRequest;
 import com.alwo.exception.ConflictException;
-import com.alwo.exception.SpringAlwoException;
-//import com.alwo.model.NotificationEmail;
 import com.alwo.model.User;
-//import com.alwo.model.VerificationToken;
 import com.alwo.enums.UserRoleEnum;
 import com.alwo.repository.UserRepository;
-//import com.alwo.repository.VerificationTokenRepository;
 import com.alwo.security.JwtProvider;
 import com.alwo.service.AuthService;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,7 +21,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 
@@ -82,6 +74,7 @@ public class AuthServiceImpl implements AuthService {
                 .refreshToken(refreshTokenService.generateRefreshToken().getToken())
                 .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
                 .username(loginRequest.getUsername())
+                .userRole(jwtProvider.getUserRole(authenticate))
                 .build();
 
 

@@ -6,7 +6,6 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +16,9 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.sql.Date;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import static io.jsonwebtoken.Jwts.claims;
 import static io.jsonwebtoken.Jwts.parser;
 import static java.util.Date.from;
 
@@ -101,4 +97,12 @@ public class JwtProvider {
         return jwtExpirationInMillis;
     }
 
+    public String getUserRole(Authentication authentication) {
+        List<String> stringAuth = new ArrayList<>();
+        User principal = (User) authentication.getPrincipal();
+        for (GrantedAuthority authority : principal.getAuthorities()){
+            stringAuth.add(authority.toString());
+        }
+        return stringAuth.get(0);
+    }
 }
