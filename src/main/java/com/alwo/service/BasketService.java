@@ -1,5 +1,6 @@
 package com.alwo.service;
 
+import com.alwo.dto.BasketProductDto;
 import com.alwo.model.BasketProduct;
 
 import java.util.List;
@@ -8,11 +9,17 @@ public interface BasketService {
 
     List<BasketProduct> getUserBasketProducts();
 
-    BasketProduct addProductToBasket(long productId);
+    List<BasketProduct> addProductToBasket(BasketProductDto basketProductDto);
 
-    List<BasketProduct> editUserBasketProducts(List<BasketProduct> editedBasketProducts);
+    List<BasketProduct> addLocalProductsToBasket(List<BasketProductDto> basketProductsDto);
 
-    void deleteUserBasket();
+    List<BasketProduct> editUserBasketProducts(List<BasketProductDto> editedBasketProductsDto);
 
-    void deleteProductFromBasket(Long basketProductId);
+    boolean deleteUserBasket();
+
+    List<BasketProduct> deleteProductFromBasket(Long basketProductId);
+
+    int getAmountOfBasketProducts();
+
+    List<BasketProduct> editUserBasketProduct(BasketProductDto basketProductDto);
 }
