@@ -28,6 +28,8 @@ public class DtoMapper {
                 .productType(product.getProductType().getProductType())
                 .stock(product.getStock())
                 .isActive(product.isActive())
+                .url(product.getUrl())
+                .categories(product.getCategories())
                 .build();
     }
 

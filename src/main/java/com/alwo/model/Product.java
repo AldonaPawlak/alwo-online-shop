@@ -31,6 +31,7 @@ public class Product {
     private ProductType productType;
     private int stock;
     private boolean isActive;
+    private String url;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {

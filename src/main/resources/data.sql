@@ -3,9 +3,9 @@ INSERT INTO users(password, user_role, username) values ('$2a$10$GVKthzo4fSlXAow
 INSERT INTO users(password, user_role, username) values ('$2a$10$ZyxYZVP90Q706VKi7aoZNepW2lmWMluifJEjyhT7V0/iOh2g.9sFy', 'ADMIN', 'admin@admin.pl');
 
 
-INSERT INTO product_types(product_type) values ('PRODUCT_TYPE_1');
-INSERT INTO product_types(product_type) values ('PRODUCT_TYPE_2');
-INSERT INTO product_types(product_type) values ('PRODUCT_TYPE_3');
+INSERT INTO product_types(product_type) values ('Book');
+INSERT INTO product_types(product_type) values ('Audiobook');
+INSERT INTO product_types(product_type) values ('Ebook');
 INSERT INTO product_types(product_type) values ('PRODUCT_TYPE_4');
 INSERT INTO product_types(product_type) values ('PRODUCT_TYPE_5');
 INSERT INTO product_types(product_type) values ('PRODUCT_TYPE_6');
@@ -24,16 +24,16 @@ INSERT INTO categories(category_name, description) values ('Drama', 'Drama');
 INSERT INTO categories(category_name, description) values ('Poetry', 'Poetry');
 INSERT INTO categories(category_name, description) values ('Fairy Tale', 'Fairy Tale');
 
-INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
-values ('author1', 'description1', true, 'product1', 120, 10, 1, 1, 1);
-INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
-values ('author2', 'description2', true, 'product2', 150, 8, 1, 1, 1);
-INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
-values ('author3', 'description3', true, 'product3', 200, 5, 2, 1, 1);
-INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
-values ('author4', 'description4', true, 'product4', 550, 9, 3, 2, 1);
-INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id)
-values ('author5', 'description5', true, 'product5', 330, 12, 3, 2, 1);
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
+values ('author1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'The Shadow of the Wind', 120, 10, 1, 1, 1, '0.jpg');
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
+values ('author2', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'A Novel Bookstore', 150, 8, 1, 1, 1, '1.jpg');
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
+values ('author3', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'My Dark Vanessa', 200, 5, 2, 1, 1, '2.jpg');
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
+values ('author4', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'The Midnight Library', 150, 9, 3, 2, 1, '3.jpg');
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
+values ('author5', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'Historia Pewnego Związku', 330, 12, 3, 2, 1,'4.jpg');
 
 INSERT INTO product_categories(category_id, product_id) values (1, 1);
 INSERT INTO product_categories(category_id, product_id) values (1, 2);
