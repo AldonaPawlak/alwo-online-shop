@@ -35,8 +35,8 @@ public class ProductController {
 
     @GetMapping("/alwo/products/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Product getProduct(@PathVariable long id){
-        return productService.getProduct(id);
+    public ProductDto getProduct(@PathVariable long id){
+        return dtoMapper.mapToProductDto(productService.getProduct(id));
     }
 
     // ONLY ADMIN
