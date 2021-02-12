@@ -33,7 +33,9 @@ public class ProductDto {
                       String producer,
                       String productType,
                       int stock,
-                      boolean isActive) {
+                      boolean isActive,
+                      String url,
+                      List<Category> categories) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -43,5 +45,7 @@ public class ProductDto {
         this.productType = productType;
         this.stock = stock;
         this.isActive = isActive;
+        this.url = url;
+        this.categories = categories;
     }
 }
