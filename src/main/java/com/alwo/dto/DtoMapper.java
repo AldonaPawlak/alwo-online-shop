@@ -21,9 +21,13 @@ public class DtoMapper {
         return ProductDto.builder()
                 .id(product.getId())
                 .name(product.getName())
+                .author(product.getAuthor())
                 .description(product.getDescription())
                 .price(product.getPrice())
-                .producer(product.getProducer())
+                .producer(product.getProducer().getName())
+                .productType(product.getProductType().getProductType())
+                .stock(product.getStock())
+                .isActive(product.isActive())
                 .url(product.getUrl())
                 .categories(product.getCategories())
                 .build();
@@ -76,5 +80,26 @@ public class DtoMapper {
                 .totalCost(order.getTotalCost())
                 .build();
 
+    }
+
+    public List<BasketProductDto> mapToBasketProductDtos(List<BasketProduct> userBasketProducts) {
+        return userBasketProducts.stream()
+                .map(this::mapToBasketProductDto).collect(Collectors.toList());
+    }
+
+    public BasketProductDto mapToBasketProductDto(BasketProduct basketProduct) {
+        return BasketProductDto.builder()
+                .id(basketProduct.getId())
+                .productId(basketProduct.getProduct().getId())
+                .quantity(basketProduct.getQuantity())
+                .name(basketProduct.getProduct().getName())
+                .author(basketProduct.getProduct().getAuthor())
+                .description(basketProduct.getProduct().getDescription())
+                .price(basketProduct.getProduct().getPrice())
+                .producer(basketProduct.getProduct().getProducer().getName())
+                .productType(basketProduct.getProduct().getProductType().getProductType())
+                .stock(basketProduct.getProduct().getStock())
+                .isActive(basketProduct.getProduct().isActive())
+                .build();
     }
 }

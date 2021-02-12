@@ -45,8 +45,9 @@ public class Product {
     @JsonIgnore
     private List<Category> categories = new ArrayList<>();
 
-    public Product(String name, String description, BigDecimal price, Producer producer, Tax tax, ProductType productType, int stock, boolean isActive) {
+    public Product(String name, String author, String description, BigDecimal price, Producer producer, Tax tax, ProductType productType, int stock, boolean isActive) {
         this.name = name;
+        this.author = author;
         this.description = description;
         this.price = price;
         this.producer = producer;

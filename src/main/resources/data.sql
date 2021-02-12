@@ -24,16 +24,16 @@ INSERT INTO categories(category_name, description) values ('Drama', 'Drama');
 INSERT INTO categories(category_name, description) values ('Poetry', 'Poetry');
 INSERT INTO categories(category_name, description) values ('Fairy Tale', 'Fairy Tale');
 
-INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
-values ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'The Shadow of the Wind', 120, 10, 1, 1, 1, '0.jpg');
-INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
-values ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'A Novel Bookstore', 150, 8, 1, 1, 1, '1.jpg');
-INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
-values ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'My Dark Vanessa', 200, 5, 2, 1, 1, '2.jpg');
-INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
-values ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'The Midnight Library', 150, 9, 3, 2, 1, '3.jpg');
-INSERT INTO products(description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
-values ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'Historia Pewnego Związku', 330, 12, 3, 2, 1,'4.jpg');
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
+values ('author1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'The Shadow of the Wind', 120, 10, 1, 1, 1, '0.jpg');
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
+values ('author2', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'A Novel Bookstore', 150, 8, 1, 1, 1, '1.jpg');
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
+values ('author3', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'My Dark Vanessa', 200, 5, 2, 1, 1, '2.jpg');
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
+values ('author4', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'The Midnight Library', 150, 9, 3, 2, 1, '3.jpg');
+INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
+values ('author5', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'Historia Pewnego Związku', 330, 12, 3, 2, 1,'4.jpg');
 
 INSERT INTO product_categories(category_id, product_id) values (1, 1);
 INSERT INTO product_categories(category_id, product_id) values (1, 2);
