@@ -22,10 +22,6 @@ public class PaymentMethod {
     private String url;
     private String description;
 
-//    public PaymentMethod(@NotEmpty @Size(min = 2, max = 10) String paymentMethod) {
-//        this.paymentMethod = paymentMethod;
-//    }
-
 
     public PaymentMethod(@NotEmpty String paymentMethod, String url, String description) {
         this.paymentMethod = paymentMethod;

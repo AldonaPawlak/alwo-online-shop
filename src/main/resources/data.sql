@@ -63,9 +63,9 @@ INSERT INTO shipment_statuses(shipment_status) values ('PICKEDUP');
 INSERT INTO shipment_statuses(shipment_status) values ('SHIPPED');
 INSERT INTO shipment_statuses(shipment_status) values ('DELIVERED');
 
-INSERT INTO shipment_methods(shipment_method, shipment_cost) values ('INPOST', 10);
-INSERT INTO shipment_methods(shipment_method, shipment_cost) values ('DHL', 12);
-INSERT INTO shipment_methods(shipment_method, shipment_cost) values ('POST', 8);
+INSERT INTO shipment_methods(description, shipment_cost, shipment_method, url) values ('Shipment within 48 hours, delivery 1-2 business days', 10, 'Parcel locker', 'parcel-locker.jpg');
+INSERT INTO shipment_methods(description, shipment_cost, shipment_method, url) values ('Shipment within 48 hours, delivery 2-4 business days', 14, 'Post', 'post.jpg');
+INSERT INTO shipment_methods(description, shipment_cost, shipment_method, url) values ('Shipment within 48 hours, delivery 1-2 business days', 12, 'Courier DHL', 'courier.jpg');
 
 INSERT INTO order_statuses(order_status) values ('INCOMPLETE');
 INSERT INTO order_statuses(order_status) values ('COMPLETE');
