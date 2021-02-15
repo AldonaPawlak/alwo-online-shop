@@ -18,11 +18,15 @@ public class PaymentMethod {
     private Long id;
 
     @NotEmpty
-    @Size(min = 2, max = 10)
     private String paymentMethod;
+    private String url;
+    private String description;
 
-    public PaymentMethod(@NotEmpty @Size(min = 2, max = 10) String paymentMethod) {
+
+    public PaymentMethod(@NotEmpty String paymentMethod, String url, String description) {
         this.paymentMethod = paymentMethod;
+        this.url = url;
+        this.description = description;
     }
 
     public PaymentMethod() {

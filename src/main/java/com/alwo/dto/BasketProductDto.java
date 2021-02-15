@@ -20,6 +20,7 @@ public class BasketProductDto {
     private String productType;
     private int stock;
     private boolean isActive;
+    private String url;
 
     public BasketProductDto() {
     }
@@ -34,7 +35,8 @@ public class BasketProductDto {
                             String producer,
                             String productType,
                             int stock,
-                            boolean isActive) {
+                            boolean isActive,
+                            String url) {
         this.id = id;
         this.productId = productId;
         this.quantity = quantity;
@@ -46,5 +48,6 @@ public class BasketProductDto {
         this.productType = productType;
         this.stock = stock;
         this.isActive = isActive;
+        this.url = url;
     }
 }

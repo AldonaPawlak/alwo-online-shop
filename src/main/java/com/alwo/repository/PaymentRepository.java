@@ -12,8 +12,8 @@ import java.util.Optional;
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
-    @Query("select p from Payment p")
-    List<Payment> findAllPayments(Pageable page);
-
-    Optional<Payment> findById(Long paymentId);
+//    @Query("select p from Payment p")
+//    List<Payment> findAllPayments(Pageable page);
+//
+//    Optional<Payment> findById(Long paymentId);
 }

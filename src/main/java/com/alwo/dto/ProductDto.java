@@ -25,6 +25,9 @@ public class ProductDto {
     private String url;
     private List<Category> categories;
 
+//    public ProductDto() {}
+
+
     public ProductDto(Long id,
                       String name,
                       String author,

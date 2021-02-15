@@ -18,7 +18,7 @@ public interface ShipmentService {
 
     ShipmentStatus getShipmentStatusById(long id);
 
-    List<ShipmentMethod> getShipmentMethods(int page, Sort.Direction sort);
+    List<ShipmentMethod> getShipmentMethods();
 
     List<ShipmentStatus> getShipmentStatuses(int page, Sort.Direction sort);
 }

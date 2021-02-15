@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PaymentService {
 
-    List<Payment> getPayments(int page, Sort.Direction sort);
+    List<Payment> getPayments();
 
     Payment getPaymentById(long id);
 
@@ -15,7 +15,7 @@ public interface PaymentService {
 
     PaymentStatus getPaymentStatusById(long id);
 
-    List<PaymentMethod> getPaymentMethods(int page, Sort.Direction sort);
+    List<PaymentMethod> getPaymentMethods();
 
     List<PaymentStatus> getPaymentStatuses(int page, Sort.Direction sort);
 }

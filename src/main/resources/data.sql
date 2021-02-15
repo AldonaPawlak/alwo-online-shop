@@ -52,7 +52,10 @@ INSERT INTO basket_products(quantity, product_id, user_id) values (5, 4, 2);
 INSERT INTO payment_statuses(payment_status) values ('WAITING');
 INSERT INTO payment_statuses(payment_status) values ('PROCESSED');
 INSERT INTO payment_statuses(payment_status) values ('FAILED');
-INSERT INTO payment_methods(payment_method) values ('CARD');
+
+INSERT INTO payment_methods(description, payment_method, url) values ('Traditional transfer, pay at the post office or in your bank.', 'Traditional bank transfer', 'banktransfer.jpg');
+INSERT INTO payment_methods(description, payment_method, url) values ('Payment by card or bank transfer, pay quickly and conveniently, by credit card or online transfer. ', 'Internet payment PayU', 'payu.jpg');
+INSERT INTO payment_methods(description, payment_method, url) values ('Cash on delivery, pay when you receive the package. ', 'Cash on delivery', 'cashondelivery.jpg');
 
 INSERT INTO shipment_statuses(shipment_status) values ('INITIAL');
 INSERT INTO shipment_statuses(shipment_status) values ('PACKED');
@@ -60,9 +63,9 @@ INSERT INTO shipment_statuses(shipment_status) values ('PICKEDUP');
 INSERT INTO shipment_statuses(shipment_status) values ('SHIPPED');
 INSERT INTO shipment_statuses(shipment_status) values ('DELIVERED');
 
-INSERT INTO shipment_methods(shipment_method, shipment_cost) values ('INPOST', 10);
-INSERT INTO shipment_methods(shipment_method, shipment_cost) values ('DHL', 12);
-INSERT INTO shipment_methods(shipment_method, shipment_cost) values ('Poczta', 8);
+INSERT INTO shipment_methods(description, shipment_cost, shipment_method, url) values ('Shipment within 48 hours, delivery 1-2 business days', 10, 'Parcel locker', 'parcel-locker.jpg');
+INSERT INTO shipment_methods(description, shipment_cost, shipment_method, url) values ('Shipment within 48 hours, delivery 2-4 business days', 14, 'Post', 'post.jpg');
+INSERT INTO shipment_methods(description, shipment_cost, shipment_method, url) values ('Shipment within 48 hours, delivery 1-2 business days', 12, 'Courier DHL', 'courier.jpg');
 
 INSERT INTO order_statuses(order_status) values ('INCOMPLETE');
 INSERT INTO order_statuses(order_status) values ('COMPLETE');
