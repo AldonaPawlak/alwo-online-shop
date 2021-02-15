@@ -100,6 +100,22 @@ public class DtoMapper {
                 .productType(basketProduct.getProduct().getProductType().getProductType())
                 .stock(basketProduct.getProduct().getStock())
                 .isActive(basketProduct.getProduct().isActive())
+                .url(basketProduct.getProduct().getUrl())
                 .build();
     }
+
+    public List<PaymentDto> mapToPaymentDtos(List<Payment> payments) {
+        return payments.stream()
+                .map(this::mapToPaymentDto).collect(Collectors.toList());
+    }
+
+    private PaymentDto mapToPaymentDto(Payment payment) {
+        return PaymentDto.builder()
+                .id(payment.getId())
+                .name(payment.getPaymentMethod().getPaymentMethod())
+                .description(payment.getPaymentMethod().getDescription())
+                .url(payment.getPaymentMethod().getUrl())
+                .build();
+    }
+
 }

@@ -25,6 +25,9 @@ public class ProductDto {
     private String url;
     private List<Category> categories;
 
+//    public ProductDto() {}
+
+
     public ProductDto(Long id,
                       String name,
                       String author,
@@ -33,7 +36,9 @@ public class ProductDto {
                       String producer,
                       String productType,
                       int stock,
-                      boolean isActive) {
+                      boolean isActive,
+                      String url,
+                      List<Category> categories) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -43,5 +48,7 @@ public class ProductDto {
         this.productType = productType;
         this.stock = stock;
         this.isActive = isActive;
+        this.url = url;
+        this.categories = categories;
     }
 }

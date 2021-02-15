@@ -19,13 +19,19 @@ public class ShipmentMethod {
     private Long id;
 
     @NotEmpty
-    @Size(min = 2, max = 10)
     private String shipmentMethod;
     private BigDecimal shipmentCost;
+    private String url;
+    private String description;
 
-    public ShipmentMethod(@NotEmpty @Size(min = 2, max = 10) String shipmentMethod, BigDecimal shipmentCost) {
+    public ShipmentMethod(@NotEmpty String shipmentMethod,
+                          BigDecimal shipmentCost,
+                          String url,
+                          String description) {
         this.shipmentMethod = shipmentMethod;
         this.shipmentCost = shipmentCost;
+        this.url = url;
+        this.description = description;
     }
 
     public ShipmentMethod() {

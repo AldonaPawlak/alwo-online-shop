@@ -27,8 +27,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<Payment> getPayments(int page, Sort.Direction sort) {
-        return paymentRepository.findAllPayments(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")));
+    public List<Payment> getPayments() {
+        return paymentRepository.findAll();
     }
 
     @Override
@@ -50,8 +50,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<PaymentMethod> getPaymentMethods(int page, Sort.Direction sort) {
-        return paymentMethodRepository.findAllPaymentMethods(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")));
+    public List<PaymentMethod> getPaymentMethods() {
+        return paymentMethodRepository.findAll();
     }
 
     @Override

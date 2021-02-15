@@ -52,8 +52,8 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     @Override
-    public List<ShipmentMethod> getShipmentMethods(int page, Sort.Direction sort) {
-        return shipmentRepository.findAllShipmentMethods(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")));
+    public List<ShipmentMethod> getShipmentMethods() {
+        return shipmentMethodRepository.findAll();
     }
 
     @Override
