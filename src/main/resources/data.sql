@@ -73,5 +73,8 @@ INSERT INTO order_statuses(order_status) values ('BACKORDERED');
 INSERT INTO order_statuses(order_status) values ('CANCELED');
 INSERT INTO order_statuses(order_status) values ('DECLINED');
 
+INSERT INTO contact_types(contact_type) values ('DELIVERY');
+INSERT INTO contact_types(contact_type) values ('INVOICE');
+
 INSERT INTO shipments(shipment_method_id, shipment_status_id) values ( 1, 1 );
 INSERT INTO payments(payment_method_id, payment_status_id) values ( 1, 1 );
