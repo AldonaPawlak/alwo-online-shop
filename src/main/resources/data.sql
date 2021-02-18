@@ -23,6 +23,7 @@ INSERT INTO categories(category_name, description) values ('Non-Fiction', 'Non-F
 INSERT INTO categories(category_name, description) values ('Drama', 'Drama');
 INSERT INTO categories(category_name, description) values ('Poetry', 'Poetry');
 INSERT INTO categories(category_name, description) values ('Fairy Tale', 'Fairy Tale');
+INSERT INTO categories(category_name, description) values ('Bestseller', 'Bestseller');
 
 INSERT INTO products(author, description, is_active, name, price, stock, producer_id, product_type_id, tax_id, url)
 values ('author1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', true, 'The Shadow of the Wind', 120, 10, 1, 1, 1, '0.jpg');
@@ -40,7 +41,10 @@ INSERT INTO product_categories(category_id, product_id) values (1, 2);
 INSERT INTO product_categories(category_id, product_id) values (1, 3);
 INSERT INTO product_categories(category_id, product_id) values (2, 4);
 INSERT INTO product_categories(category_id, product_id) values (2, 5);
-INSERT INTO product_categories(category_id, product_id) values (2, 1);
+INSERT INTO product_categories(category_id, product_id) values (7, 1);
+INSERT INTO product_categories(category_id, product_id) values (7, 4);
+INSERT INTO product_categories(category_id, product_id) values (7, 5);
+INSERT INTO product_categories(category_id, product_id) values (7, 2);
 
 
 INSERT INTO basket_products(quantity, product_id, user_id) values (3, 1, 1);
