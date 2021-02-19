@@ -7,13 +7,16 @@ import com.alwo.dto.OrderedProductResponse;
 import com.alwo.enums.OrderStatuses;
 import com.alwo.enums.PaymentStatuses;
 import com.alwo.enums.ShipmentStatuses;
-import com.alwo.exception.ResourceNotFoundException;
+import com.alwo.enums.UserRoleEnum;
 import com.alwo.exception.SpringAlwoException;
 import com.alwo.model.*;
 import com.alwo.repository.*;
 import com.alwo.service.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,9 +31,7 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
-    private OrderStatusRepository orderStatusRepository;
     private UserRepository userRepository;
-    private BasketService basketService;
     private ShipmentService shipmentService;
     private PaymentService paymentService;
     private DtoMapper dtoMapper;
@@ -42,9 +43,7 @@ public class OrderServiceImpl implements OrderService {
     private static final int PAGE_SIZE = 10;
 
     public OrderServiceImpl(OrderRepository orderRepository,
-                            OrderStatusRepository orderStatusRepository,
                             UserRepository userRepository,
-                            BasketService basketService,
                             ShipmentService shipmentService,
                             PaymentService paymentService,
                             DtoMapper dtoMapper,
@@ -54,9 +53,7 @@ public class OrderServiceImpl implements OrderService {
                             AuthServiceImpl authServiceImpl,
                             ProductRepository productRepository) {
         this.orderRepository = orderRepository;
-        this.orderStatusRepository = orderStatusRepository;
         this.userRepository = userRepository;
-        this.basketService = basketService;
         this.shipmentService = shipmentService;
         this.paymentService = paymentService;
         this.dtoMapper = dtoMapper;
@@ -112,30 +109,22 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createNewOrder(OrderDataDto orderDataDto) {
-        System.out.println(orderDataDto.getAddresses());
+        User user = getUser();
         Order order = orderRepository.save(new Order());
-        User user = authServiceImpl.getCurrentUser();
-        OrderStatus orderStatus = orderStatusService.getOrderStatus(OrderStatuses.INCOMPLETE.getValue());
 
+        OrderStatus orderStatus = orderStatusService.getOrderStatus(OrderStatuses.INCOMPLETE.getValue());
         List<OrderedProduct> orderedProducts = createOrderedProducts(orderDataDto, order);
         List<ContactDetail> contactDetails = contactDetailRepository.saveAll(dtoMapper.mapToContactDetail(orderDataDto.getAddresses(), user, order));
-        ShipmentMethod shipmentMethod = shipmentService.getShipmentMethodById(orderDataDto.getShipmentId());
-        ShipmentStatus shipmentStatus = shipmentService.getShipmentStatusById(ShipmentStatuses.INITIAL.getValue());
+        Shipment shipment = getShipmentFromData(orderDataDto);
+        Payment payment = getPaymentFromData(orderDataDto);
 
-        Shipment shipment = dtoMapper.mapToShipment(shipmentStatus, shipmentMethod);
-        PaymentMethod paymentMethod = paymentService.getPaymentMethodById(orderDataDto.getPaymentId());
-        PaymentStatus paymentStatus = paymentService.getPaymentStatusById(PaymentStatuses.WAITING.getValue());
-        Payment payment = dtoMapper.mapToPayment(paymentStatus ,paymentMethod);
         order.setOrderStatus(orderStatus);
         order.setOrderedProducts(orderedProducts);
-        if (user != null){
-            order.setUser(user);
-        }
+        order.setUser(user);
         order.setAddresses(contactDetails);
         order.setShipment(shipment);
         order.setPayment(payment);
-        Date date = new Date();
-        order.setPurchaseDate(date);
+        order.setPurchaseDate(new Date());
         BigDecimal totalPrice = new BigDecimal(0);
         for (OrderedProduct orderedProduct : orderedProducts) {
             totalPrice =  totalPrice.add(orderedProduct.getTotalPrice());
@@ -144,8 +133,33 @@ public class OrderServiceImpl implements OrderService {
         totalPrice = totalPrice.add(shipment.getShipmentMethod().getShipmentCost());
         order.setTotalCost(totalPrice);
 
-        System.out.println(order.toString());
         return orderRepository.save(order);
+    }
+
+    private Payment getPaymentFromData(OrderDataDto orderDataDto) {
+        PaymentMethod paymentMethod = paymentService.getPaymentMethodById(orderDataDto.getPaymentId());
+        PaymentStatus paymentStatus = paymentService.getPaymentStatusById(PaymentStatuses.WAITING.getValue());
+        return dtoMapper.mapToPayment(paymentStatus ,paymentMethod);
+    }
+
+    private Shipment getShipmentFromData(OrderDataDto orderDataDto) {
+        ShipmentMethod shipmentMethod = shipmentService.getShipmentMethodById(orderDataDto.getShipmentId());
+        ShipmentStatus shipmentStatus = shipmentService.getShipmentStatusById(ShipmentStatuses.INITIAL.getValue());
+        return dtoMapper.mapToShipment(shipmentStatus, shipmentMethod);
+    }
+
+    private User getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            return authServiceImpl.getCurrentUser();
+        } else {
+            User temporaryUser = new User();
+            temporaryUser.setActive(true);
+            temporaryUser.setUsername("temp@temp.com");
+            temporaryUser.setPassword("temporary");
+            temporaryUser.setUserRole(UserRoleEnum.TEMPORARY.name());
+            return userRepository.save(temporaryUser);
+        }
     }
 
     @Override
@@ -164,7 +178,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderedProduct> createOrderedProducts(OrderDataDto orderDataDto,  Order order) {
-//        List<BasketProduct> basketProducts = basketService.getUserBasketProducts();
         List<Long> ids = orderDataDto.getOrderedProducts().stream()
                 .map(OrderedProductResponse::getProductId)
                 .collect(Collectors.toList());
@@ -173,37 +186,26 @@ public class OrderServiceImpl implements OrderService {
         for (Product product : products) {
             for (OrderedProductResponse responseProduct : orderDataDto.getOrderedProducts()){
                 if (product.getId().equals(responseProduct.getProductId())) {
-                    OrderedProduct orderedProduct = new OrderedProduct();
-                    orderedProduct.setProduct(product);
-                    orderedProduct.setProductName(product.getName());
-                    orderedProduct.setDescription(product.getDescription());
-                    orderedProduct.setAuthor(product.getAuthor());
-                    orderedProduct.setProducerName(product.getProducer().getName());
-                    orderedProduct.setTaxRate(product.getTax().getTaxRate());
-                    orderedProduct.setQuantity(responseProduct.getQuantity());
-                    orderedProduct.setTotalPrice(getTotalPrice(product, responseProduct.getQuantity()));
-                    orderedProduct.setOrder(order);
+                    OrderedProduct orderedProduct = getOrderedProduct(order, product, responseProduct);
                     orderedProducts.add(orderedProduct);
                 }
             }
         }
-//        basketService.deleteUserBasket();
-//        for (OrderedProductResponse responseProduct : orderDataDto.getOrderedProducts()){
-//            Product product = productRepository.findById(responseProduct.getProductId())
-//                    .orElseThrow(() -> new ResourceNotFoundException("Product " + responseProduct.getProductId() + " does not exist"));
-//            OrderedProduct orderedProduct = new OrderedProduct();
-//            orderedProduct.setProduct(basketProduct.getProduct());
-//            orderedProduct.setProductName(basketProduct.getProduct().getName());
-//            orderedProduct.setDescription(basketProduct.getProduct().getDescription());
-//            orderedProduct.setProducerName(basketProduct.getProduct().getProducer().getName());
-//            orderedProduct.setTaxRate(basketProduct.getProduct().getTax().getTaxRate());
-//            orderedProduct.setQuantity(basketProduct.getQuantity());
-//            orderedProduct.setOrderedProductPrice(basketProduct.getProduct().getPrice());
-//            orderedProduct.setTotalPrice(basketProduct.getTotalPrice());
-//            orderedProduct.setOrder(order);
-//            orderedProducts.add(orderedProduct);
-//        }
         return orderedProductRepository.saveAll(orderedProducts);
+    }
+
+    private OrderedProduct getOrderedProduct(Order order, Product product, OrderedProductResponse responseProduct) {
+        OrderedProduct orderedProduct = new OrderedProduct();
+        orderedProduct.setProduct(product);
+        orderedProduct.setProductName(product.getName());
+        orderedProduct.setDescription(product.getDescription());
+        orderedProduct.setAuthor(product.getAuthor());
+        orderedProduct.setProducerName(product.getProducer().getName());
+        orderedProduct.setTaxRate(product.getTax().getTaxRate());
+        orderedProduct.setQuantity(responseProduct.getQuantity());
+        orderedProduct.setTotalPrice(getTotalPrice(product, responseProduct.getQuantity()));
+        orderedProduct.setOrder(order);
+        return orderedProduct;
     }
 
     public BigDecimal getTotalPrice(Product product, int quantity) {
