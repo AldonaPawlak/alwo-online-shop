@@ -40,7 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/alwo/products/**", "/alwo/categories/**",
-                        "/alwo/payment-methods/**", "/alwo/shipment-methods/**")
+                        "/alwo/payment-methods/**", "/alwo/shipment-methods/**", "/alwo/contact/**")
+                .permitAll()
+                .antMatchers(HttpMethod.POST, "/alwo/contact/**")
                 .permitAll()
                 .antMatchers(HttpMethod.POST, "/alwo/orders/**")
                 .permitAll()
