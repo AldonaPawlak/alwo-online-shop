@@ -65,15 +65,6 @@ public class User {
         return Objects.hash(id, username, password, isActive, userRole);
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", isActive=" + isActive +
-                ", userRole='" + userRole + '\'' +
-                '}';
-    }
+
 }
 

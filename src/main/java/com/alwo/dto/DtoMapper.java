@@ -41,6 +41,8 @@ public class DtoMapper {
                             user,
                             detailDto.getFirstName(),
                             detailDto.getLastName(),
+                            detailDto.getEmail(),
+                            detailDto.getPhone(),
                             detailDto.getStreet(),
                             detailDto.getApartmentNumber(),
                             detailDto.getZipCode(),
@@ -118,4 +120,23 @@ public class DtoMapper {
                 .build();
     }
 
+    public List<ContactDetailDto> mapToContactDetailDtos(List<ContactDetail> contactDetails) {
+        return contactDetails.stream()
+                .map(this::mapToContactDetailDto).collect(Collectors.toList());
+    }
+
+    private ContactDetailDto mapToContactDetailDto(ContactDetail contactDetail) {
+        return ContactDetailDto.builder()
+                .id(contactDetail.getId())
+                .firstName(contactDetail.getFirstname())
+                .lastName(contactDetail.getLastName())
+                .email(contactDetail.getEmail())
+                .phone(contactDetail.getPhone())
+                .street(contactDetail.getStreet())
+                .apartmentNumber(contactDetail.getApartmentNumber())
+                .zipCode(contactDetail.getZipCode())
+                .description(contactDetail.getDescription())
+                .contactType(contactDetail.getContactType().getContactType())
+                .build();
+    }
 }

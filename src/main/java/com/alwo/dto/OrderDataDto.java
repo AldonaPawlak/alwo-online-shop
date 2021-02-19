@@ -6,7 +6,8 @@ import java.util.List;
 
 @Getter
 public class OrderDataDto {
-    private long shipmentMethod;
-    private long paymentMethod;
+    private long paymentId;
+    private long shipmentId;
     private List<ContactDetailDto> addresses;
+    private List<OrderedProductResponse> orderedProducts;
 }

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Data
 @Getter
 @Setter
 @Entity
@@ -53,4 +52,5 @@ public class Order {
     }
 
     public Order() {}
+
 }

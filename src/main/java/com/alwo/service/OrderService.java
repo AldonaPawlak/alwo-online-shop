@@ -15,7 +15,7 @@ public interface OrderService {
 
     Order getOrder(long id);
 
-    List<OrderedProduct> getUserOrderedProducts(User user, Order order);
+    List<OrderedProduct> createOrderedProducts(OrderDataDto orderDataDto, Order order);
 
     Order addOrder(Order order);
 

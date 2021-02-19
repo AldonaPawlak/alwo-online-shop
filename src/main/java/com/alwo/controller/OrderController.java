@@ -40,7 +40,7 @@ public class OrderController {
         return orderService.getUserOrder(id);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @PostMapping("/alwo/orders")
     public void addOrder(@RequestBody OrderDataDto orderDataDto) {
         orderService.createNewOrder(orderDataDto);

@@ -2,10 +2,14 @@ package com.alwo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Data
+@Setter
+@Getter
 @Entity
 @Table(name = "ordered_products")
 public class OrderedProduct {
@@ -17,6 +21,7 @@ public class OrderedProduct {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Product product;
     private String productName;
+    private String author;
     private String description;
     private String producerName;
     private double taxRate;
@@ -32,6 +37,7 @@ public class OrderedProduct {
     public OrderedProduct(Product product,
                           String productName,
                           String description,
+                          String author,
                           String producerName,
                           double taxRate,
                           int quantity,
@@ -39,6 +45,7 @@ public class OrderedProduct {
                           BigDecimal totalPrice) {
         this.product = product;
         this.productName = productName;
+        this.author = author;
         this.description = description;
         this.producerName = producerName;
         this.taxRate = taxRate;
