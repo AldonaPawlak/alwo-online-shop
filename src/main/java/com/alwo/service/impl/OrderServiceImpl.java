@@ -153,12 +153,7 @@ public class OrderServiceImpl implements OrderService {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             return authServiceImpl.getCurrentUser();
         } else {
-            User temporaryUser = new User();
-            temporaryUser.setActive(true);
-            temporaryUser.setUsername("temp@temp.com");
-            temporaryUser.setPassword("temporary");
-            temporaryUser.setUserRole(UserRoleEnum.TEMPORARY.name());
-            return userRepository.save(temporaryUser);
+            return null;
         }
     }
 
