@@ -2,9 +2,11 @@ package com.alwo.controller;
 
 import com.alwo.dto.DtoMapper;
 import com.alwo.model.Category;
+import com.alwo.model.Product;
 import com.alwo.service.CategoryService;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,5 +41,19 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.OK)
     public Set<Category> getSelectedCategories(@RequestParam(required = false) List<String> categories) {
         return categoryService.getCategoriesBYNames(categories);
+    }
+
+    @PostMapping("/admin/alwo/categories")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Category addCategory(@RequestBody Category category){
+        return categoryService.addCategory(category);
+    }
+
+    @DeleteMapping("/admin/alwo/categories/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void deleteCategory(@PathVariable long id){
+        categoryService.deleteCategory(id);
     }
 }

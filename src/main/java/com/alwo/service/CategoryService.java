@@ -17,4 +17,7 @@ public interface CategoryService {
 
     Set<Category> getCategoriesBYNames(List<String> categoriesNames);
 
+    Category addCategory(Category category);
+
+    void deleteCategory(long id);
 }
