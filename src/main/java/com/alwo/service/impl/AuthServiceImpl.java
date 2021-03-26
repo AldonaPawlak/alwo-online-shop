@@ -77,7 +77,6 @@ public class AuthServiceImpl implements AuthService {
                 .userRole(jwtProvider.getUserRole(authenticate))
                 .build();
 
-
     }
 
     @org.springframework.transaction.annotation.Transactional(readOnly = true)

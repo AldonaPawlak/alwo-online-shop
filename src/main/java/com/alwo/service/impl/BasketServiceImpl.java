@@ -8,6 +8,8 @@ import com.alwo.model.User;
 import com.alwo.repository.BasketProductRepository;
 import com.alwo.repository.ProductRepository;
 import com.alwo.service.BasketService;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,6 +31,7 @@ public class BasketServiceImpl implements BasketService {
     }
 
     @Override
+    @Cacheable(cacheNames = "UserBasket")
     public List<BasketProduct> getUserBasketProducts() {
         User user = authServiceImpl.getCurrentUser();
         return basketProductRepository.findAllByUser(user);
@@ -37,6 +40,7 @@ public class BasketServiceImpl implements BasketService {
 
     @Override
     @Transactional
+    @CachePut(cacheNames = "UserBasket")
     public List<BasketProduct> editUserBasketProduct(BasketProductDto basketProductDto) {
         List<BasketProduct> userBasketProducts = getUserBasketProducts();
         BasketProduct updatedBasketProduct = updateBasketProductIfExist(userBasketProducts, basketProductDto);

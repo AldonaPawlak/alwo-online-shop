@@ -52,7 +52,6 @@ public class JwtProvider {
                 .compact();
     }
 
-    //
     public String generateTokenWithUserName(String username) {
         return Jwts.builder()
                 .setSubject(username)

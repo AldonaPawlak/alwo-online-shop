@@ -16,3 +16,4 @@ public interface BasketProductRepository extends JpaRepository<BasketProduct, Lo
     BasketProduct findBasketProductByProduct(Product product);
 
 }
+

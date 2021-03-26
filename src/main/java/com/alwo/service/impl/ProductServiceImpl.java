@@ -6,24 +6,21 @@ import com.alwo.repository.CategoryRepository;
 import com.alwo.repository.ProductRepository;
 import com.alwo.service.CategoryService;
 import com.alwo.service.ProductService;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;
-    private CategoryRepository categoryRepository;
     private CategoryService categoryServiceImpl;
     private static final int PAGE_SIZE = 10;
 
@@ -32,6 +29,8 @@ public class ProductServiceImpl implements ProductService {
         this.categoryServiceImpl = categoryServiceImpl;
     }
 
+    @Transactional
+    @Cacheable(cacheNames = "Products")
     public List<Product> getProducts(int page, List<String> categories, Sort.Direction sort) {
         Set<Category> selectedCategories = categoryServiceImpl.getCategoriesBYNames(categories);
         List<Product> products = productRepository.findAllProducts(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "name")));
@@ -46,28 +45,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    //    @Cacheable(cacheNames = "SinglePost", key = "#id")
+    @Cacheable(cacheNames = "SingleProduct", key = "#id")
     public Product getProduct(long id){
         return productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product " + id + " does not exist"));
     }
 
-//    @Override
-//    @Transactional
-//    public List<Product> getProductsByCategories(List<String> categories) {
-//        Set<Category> selectedCategories = categoryServiceImpl.getCategoriesBYNames(categories);
-//        List<Product> products = productRepository.findAllProducts();
-//        List<Product> selectedProducts = new ArrayList<>();
-//        for (Product product : products){
-//            if (product.getCategories().containsAll(selectedCategories)){
-//                selectedProducts.add(product);
-//            }
-//        }
-//
-//        return selectedProducts;
-//    }
-
     @Transactional
+    @CachePut(cacheNames = "SingleProduct", key ="result.id" )
     public Product editProduct(Product product) {
 
         Product productEdited = getProduct(product.getId());

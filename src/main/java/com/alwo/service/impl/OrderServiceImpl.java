@@ -4,20 +4,20 @@ import com.alwo.dto.DtoMapper;
 import com.alwo.dto.OrderDataDto;
 import com.alwo.dto.OrderResponseDto;
 import com.alwo.dto.OrderedProductResponse;
-import com.alwo.enums.OrderStatuses;
-import com.alwo.enums.PaymentStatuses;
-import com.alwo.enums.ShipmentStatuses;
-import com.alwo.enums.UserRoleEnum;
+import com.alwo.enums.*;
 import com.alwo.exception.SpringAlwoException;
 import com.alwo.model.*;
 import com.alwo.repository.*;
 import com.alwo.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
-    private UserRepository userRepository;
     private ShipmentService shipmentService;
     private PaymentService paymentService;
     private DtoMapper dtoMapper;
@@ -42,8 +41,10 @@ public class OrderServiceImpl implements OrderService {
     private ProductRepository productRepository;
     private static final int PAGE_SIZE = 10;
 
+    private final EmailService emailSender;
+    private final TemplateService templateService;
+
     public OrderServiceImpl(OrderRepository orderRepository,
-                            UserRepository userRepository,
                             ShipmentService shipmentService,
                             PaymentService paymentService,
                             DtoMapper dtoMapper,
@@ -51,9 +52,11 @@ public class OrderServiceImpl implements OrderService {
                             OrderedProductRepository orderedProductRepository,
                             ContactDetailRepository contactDetailRepository,
                             AuthServiceImpl authServiceImpl,
-                            ProductRepository productRepository) {
+                            ProductRepository productRepository,
+                            EmailService emailSender,
+                            TemplateService templateService
+                            ) {
         this.orderRepository = orderRepository;
-        this.userRepository = userRepository;
         this.shipmentService = shipmentService;
         this.paymentService = paymentService;
         this.dtoMapper = dtoMapper;
@@ -62,6 +65,8 @@ public class OrderServiceImpl implements OrderService {
         this.contactDetailRepository = contactDetailRepository;
         this.authServiceImpl = authServiceImpl;
         this.productRepository = productRepository;
+        this.emailSender= emailSender;
+        this.templateService = templateService;
     }
 
     public List<Order> getOrders(int page, Sort.Direction sort) {
@@ -97,6 +102,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Cacheable(cacheNames = "UserOrders")
     public List<OrderResponseDto> getUserOrders() {
         User user = authServiceImpl.getCurrentUser();
         return dtoMapper.mapToOrderResponseDtos(orderRepository.findAllByUser(user));
@@ -133,7 +139,19 @@ public class OrderServiceImpl implements OrderService {
         totalPrice = totalPrice.add(shipment.getShipmentMethod().getShipmentCost());
         order.setTotalCost(totalPrice);
 
+        sendEmailWithOrder(orderedProducts, orderDataDto);
         return orderRepository.save(order);
+    }
+
+    private void sendEmailWithOrder(List<OrderedProduct> orderedProducts, OrderDataDto orderDataDto) {
+        String email = "";
+        for (int i = 0; i < orderDataDto.getAddresses().size(); i++){
+            if (orderDataDto.getAddresses().get(i).getContactType().equals(ContactTypeEnum.INVOICE.name())) {
+                email = orderDataDto.getAddresses().get(i).getEmail();
+            }
+        }
+        emailSender.sendEmail(email, "Your order", templateService.orderEmail(orderedProducts));
+
     }
 
     private Payment getPaymentFromData(OrderDataDto orderDataDto) {

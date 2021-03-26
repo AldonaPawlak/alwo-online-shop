@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">YOUR ORDER</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="style.css"/>
+
+</head>
+<body>
+<table class="content-table">
+    <thead>
+    <tr>
+        <th class="product-field">Title</th>
+        <th class="price-field">Author</th>
+        <th class="quantity-field">Description</th>
+        <th class="value-field">Quantity</th>
+        <th class="value-field">Price</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="product: ${products}" th:object="${product}">
+        <td th:text="*{productName}">Title</td>
+        <td th:text="*{author}">Author</td>
+        <td th:text="*{description}">Description</td>
+        <td th:text="*{quantity}">Quantity</td>
+        <td th:text="*{totalPrice}">Price</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

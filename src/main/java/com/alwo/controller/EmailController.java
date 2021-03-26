@@ -9,6 +9,16 @@ import org.thymeleaf.context.Context;
 @RestController
 public class EmailController {
 
+  private final EmailService emailSender;
+  private final TemplateEngine templateEngine;
+
+  @Autowired
+  public EmailController(EmailService emailSender,
+                         TemplateEngine templateEngine){
+    this.emailSender= emailSender;
+    this.templateEngine = templateEngine;
+  }
+
   @PostMapping("/alwo/contact")
   public void sendEmail(@RequestBody String email) {
     Context context = new Context();
@@ -19,14 +29,5 @@ public class EmailController {
     emailSender.sendEmail(email, "Alwo BOOKSTORE Newsletter", body);
   }
 
-  private final EmailService emailSender;
-  private final TemplateEngine templateEngine;
-
-  @Autowired
-  public EmailController(EmailService emailSender,
-                         TemplateEngine templateEngine){
-    this.emailSender= emailSender;
-    this.templateEngine = templateEngine;
-  }
 
 }
